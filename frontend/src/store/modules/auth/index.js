@@ -10,6 +10,8 @@ export default {
                 token: '',
                 moderation: null,
             },
+            logginIn: false,
+            loginError: null
     },
     mutations,
     actions,

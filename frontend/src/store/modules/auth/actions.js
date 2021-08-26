@@ -25,18 +25,23 @@ export default {
         return new Promise((resolve, reject) => {
             instance.post('/login', userInfos)
                 .then((response) => {
-                    let log = JSON.parse(response.data);
-                    localStorage.setItem('userId', log.userId);
-                    localStorage.setItem('token', log.token);
-                    localStorage.setItem('moderation', log.moderation);
+                    const log = JSON.parse(response.data);
+                    const user = JSON.stringify({
+                        userId: log.userId,
+                        token: log.token,
+                        moderation: log.moderation
+                    })
+                    localStorage.setItem('user', user);
+                    commit('loginStop', null);
                     commit('setStatus', 'login');
-                    commit('logUser', localStorage);
+                    commit('logUser', {userId : log.userId, token: log.token, moderation: log.moderation});
                     resolve(response);
                     console.log(localStorage);
                 })
                 .catch((error) => {
                     commit('setStatus', 'error_login');
-                    commit('logUser', null);
+                    commit('loginStop', error.log.error);
+                    commit('user', null);
                     reject(error);
                 })
         })
@@ -44,6 +49,6 @@ export default {
     },
     fetchAccessUser({ commit }) {
         commit('logUser', localStorage.getItem('user'));
-    }
+    },
 
 }

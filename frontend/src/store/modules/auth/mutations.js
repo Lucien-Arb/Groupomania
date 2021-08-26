@@ -5,4 +5,8 @@ export default {
     logUser: function (state, user) {
         state.user = user;
     },
+    loginStop: (state, errorMessage) => {
+        state.logginIn = false;
+        state.loginError = errorMessage;
+    },
 };
