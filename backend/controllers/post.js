@@ -8,6 +8,10 @@ exports.getAllPosts = (req, res, next) => {
     postsModels.getAllPosts()
         .then((response) => {
             res.status(200).json(JSON.stringify(response));
+        })
+        .catch((error) =>{
+            console.log(error);
+            res.status(400).json(JSON.stringify(error));
         });
 }
 exports.createPost = (req, res, next) => { 
@@ -18,6 +22,10 @@ exports.createPost = (req, res, next) => {
     postsModels.createPost(sqlInserts)
         .then((response) => {
             res.status(201).json(JSON.stringify(response));
+        })
+        .catch((error) =>{
+            console.log(error);
+            res.status(400).json(JSON.stringify(error));
         })
 }
 exports.updatePost = (req, res, next) => {
