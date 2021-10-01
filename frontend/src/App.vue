@@ -10,15 +10,14 @@
 import TheHeader from './components/layout/TheHeader.vue';
 import { mapActions } from 'vuex';
 
+
 export default {
 
   components: {
     TheHeader,
     },
     methods: {
-      ...mapActions([
-        'fetchAccessUser'
-      ]),
+      ...mapActions('auth', ['fetchAccessUser']),
     },
     created() {
       this.fetchAccessUser();

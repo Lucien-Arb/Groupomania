@@ -1,11 +1,19 @@
 <template>
   <div class="background">
-    <section class="section columns is-centered">
-      <div class="card column is-half-desktop is-two-thirds-tablet is-five-quarter-mobile is-one-third-widescreen">
+    <section class="section columns is-centered is-mobile">
+      <div class=" card
+        column
+        is-half-desktop
+        is-three-fifths-tablet
+        is-10-mobile
+        is-half-widescreen
+        p-6">
         <h1>{{ submitButtonCaption }}</h1>
-        <p v-if="mode == 'login'">Vous n'avez pas de compte ? <a @click="switchAuthMode()">Créer un compte</a></p>
-        <p v-else>Vous avez déjà un compte ? <a @click="switchAuthMode()">Se connecter</a></p>
-        <form action="" @submit.prevent="submitForm">
+        <div class="columns has-text-centered mt-1">
+          <p v-if="mode == 'login'" class="column">Vous n'avez pas de compte ? <a @click="switchAuthMode()">Créer un compte</a></p>
+          <p v-else class="column">Vous avez déjà un compte ? <a @click="switchAuthMode()">Se connecter</a></p>
+        </div>
+        <form action="" @submit.prevent="submitForm" class="pt-0">
           <div class="field" v-if="!wantToConnect">
             <label for="firstName" class="control">Firstname</label>
             <div class="control">
@@ -55,13 +63,14 @@
             </div>
           </div>
           <div class="field is-grouped buttons is-centered">
-            <p v-if="!formIsValid" class="m-4">
+            <!-- <p v-if="!formIsValid" class="m-4">
               Vérifiez les champs. Votre email doit contenir '@' et votre mot de
               passe doit être d'au moins 8 caractères.
-            </p>
+            </p> -->
             <button  class="button is-normal is-primary column is-centered">
               <span >{{ submitButtonCaption }}</span>
             </button>
+            <p v-if="handleError() == true"> Erreur !</p>
           </div>
         </form>
       </div>
@@ -92,7 +101,7 @@ export default {
         return "Créer un compte";
       }
     },
-    ...mapState(['user'])
+    ...mapState('auth', ['user'])
   },
   methods: {
     
@@ -121,9 +130,9 @@ export default {
 
       try {
         if (this.mode === "login") {
-          await this.$store.dispatch("login", actionPayloadLogin);
+          await this.$store.dispatch("auth/login", actionPayloadLogin);
         } else {
-          await this.$store.dispatch("signup", actionPayloadSignup);
+          await this.$store.dispatch("auth/signup", actionPayloadSignup);
         }
         this.$router.replace("/profil");
       } catch (err) {
@@ -131,7 +140,7 @@ export default {
           err.message ||
           `Nous n'avons pas pu vous authentifier, esssayez à nouveau.`;
       }
-
+      
       this.isLoading = false;
     },
     switchAuthMode() {
@@ -146,6 +155,7 @@ export default {
     handleError() {
       this.error = null;
     },
+    
   },
 };
 </script>

@@ -3,7 +3,9 @@ import actions from './actions.js';
 import getters from './getters.js';
 
 export default {
-    state: {
+    namespaced: true,
+    state() {
+        return {
             status: '',
             user: {
                 userId: -1,
@@ -12,6 +14,8 @@ export default {
             },
             logginIn: false,
             loginError: null
+        }
+            
     },
     mutations,
     actions,

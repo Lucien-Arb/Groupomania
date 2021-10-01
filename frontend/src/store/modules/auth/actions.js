@@ -12,7 +12,7 @@ export default {
                 .then(function (response) {
                     commit('setStatus', 'created');
                     resolve(response);
-                    console.log(instance);
+                    console.log(userInfos);
                 })
                 .catch(function (error) {
                     commit('setStatus', 'error_create');
@@ -36,7 +36,6 @@ export default {
                     commit('setStatus', 'login');
                     commit('logUser', {userId : log.userId, token: log.token, moderation: log.moderation});
                     resolve(response);
-                    console.log(localStorage);
                 })
                 .catch((error) => {
                     commit('setStatus', 'error_login');
@@ -50,5 +49,9 @@ export default {
     fetchAccessUser({ commit }) {
         commit('logUser', localStorage.getItem('user'));
     },
+    logout({commit, dispatch}) {
+            dispatch('fetchAccessUser');
+            commit('logUser', localStorage.removeItem('user'));
+    }
 
 }

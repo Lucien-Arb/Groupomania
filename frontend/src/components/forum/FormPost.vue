@@ -1,0 +1,90 @@
+<template>
+  <section class="section columns is-centered is-mobile">
+    <div
+      class="
+        card
+        column
+        is-half-desktop
+        is-three-fifths-tablet
+        is-10-mobile
+        is-half-widescreen
+        p-6
+      "
+    >
+      <h2 class="pb-4 has-text-centered title is-1">Exprimez-vous</h2>
+      <form action="" @submit="submitForm">
+        <div class="field">
+          <label for="title" class="control">Titre :</label>
+          <div class="control">
+            <input
+              type="text"
+              name="title"
+              id="title"
+              class="input"
+              placeholder="Nouvelle recrue"
+              v-model.trim="title"
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label for="content" class="control">Texte</label>
+          <div class="control">
+            <textarea
+              name="content"
+              id="content"
+              class="textarea"
+              placeholder="Ecrivez ce qu'il vous plaît..."
+              rows="4"
+              v-model.trim="content"
+            ></textarea>
+          </div>
+        </div>
+         <div class="field ">
+            <!-- <p v-if="!formIsValid" class="m-4">
+              Vérifiez les champs. Votre email doit contenir '@' et votre mot de
+              passe doit être d'au moins 8 caractères.
+            </p> -->
+            <button  class="button is-normal is-primary is-centered">
+              <span class="content-heading-weight">Submit form</span>
+            </button>
+            <!-- <p > Erreur !</p> -->
+          </div>
+      </form>
+    </div>
+  </section>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      title: "",
+      content: "",
+      formIsValid: true,
+    }
+  },
+  methods: {
+    submitForm() {
+      const id = JSON.parse(localStorage.getItem('user'))['userId'];
+
+      const postData = JSON.stringify({
+        userId: id,
+        title: this.title,
+        content: this.content,
+      })
+
+      if (this.title === "" && this.content === "" && this.userId === null) {
+        this.formIsValid = false;
+        return;
+      } else {
+        this.$store.dispatch("forum/sendPost", postData);
+      }
+
+    }
+  }
+
+};
+</script>
+
+<style>
+</style>

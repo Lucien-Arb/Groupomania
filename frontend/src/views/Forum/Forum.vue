@@ -1,12 +1,33 @@
 <template>
-  <h2>
-      Forum page
-  </h2>
+<div>
+  <form-post></form-post>
+  
+  <post></post>
+
+  <ul>
+    <!-- <li v-for="post in allPosts" :key="post.id">
+      {{ post.title }}
+    </li> -->
+  </ul>
+</div>
+  
 </template>
 
 <script>
-export default {
+import FormPost from '../../components/forum/FormPost.vue';
+import Post from '../../components/forum/Post.vue';
 
+export default {
+  components: {
+    FormPost,
+    Post,
+  },
+  computed: {
+    // allPosts() {
+    //   console.log(this.$store.getters['profil/posts'])
+    //   return this.$store.getters['profil/posts'];
+    // }
+  }
 }
 </script>
 

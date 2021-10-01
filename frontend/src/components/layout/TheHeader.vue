@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-dark " role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <h1>
         <router-link to="/" class="navbar-item has-text-white"
@@ -7,10 +7,12 @@
         >
       </h1>
       <a
+        id="burger"
         role="button"
         class="navbar-burger"
         aria-label="menu"
         aria-expanded="false"
+        @click="toogleBurger()"
       >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -20,18 +22,18 @@
     <div class="navbar-menu">
       <ul class="navbar-start pt-2 ml-6">
         <li>
-          <router-link to="/profil" class="navbar-item has-text-white"
-            >Mon profil</router-link
+          <router-link to="/profil" class="navbar-item"
+            ><a>Mon profil</a></router-link
           >
         </li>
         <li>
-          <router-link to="/forum" class="navbar-item has-text-white"
-            >Forum</router-link
+          <router-link to="/forum" class="navbar-item"
+            ><a>Forum</a></router-link
           >
         </li>
         <li>
-          <router-link to="/modération" class="navbar-item has-text-white"
-            >Devenir modérateur</router-link
+          <router-link to="/modération" class="navbar-item"
+            ><a>Devenir modérateur</a></router-link
           >
         </li>
       </ul>
@@ -39,7 +41,10 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <router-link to="/auth" class="button is-danger is-light"
+          <router-link
+            to="/auth"
+            class="button is-danger is-light"
+            @click="logout"
             >Se déconnecter</router-link
           >
         </div>
@@ -49,7 +54,19 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    logout() {
+      return this.$store.dispatch("auth/logout");
+    },
+    toogleBurger() {
+      const currentId = document.getElementById("burger");
+      currentId.classList.toggle('is-active');
+      const currentClass = document.querySelector(".navbar-menu");
+      currentClass.classList.toggle("is-active");
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -62,4 +79,21 @@ h1 {
 li {
   font-size: 1.5rem;
 }
+
+a {
+  color: #fff;
+}
+
+@media screen and (max-width: 1009px) {
+  a {
+    color: #fff; 
+  }
+  .navbar-menu {
+    background-color: #363636 ;
+  }
+  a:focus, a:hover, a:active {
+    background-color: rgb(231, 229, 229)!important;
+    color: #363636!important;
+  }
+} 
 </style>
