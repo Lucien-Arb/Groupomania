@@ -37,7 +37,6 @@ export default {
                 reject(error);
             })
         });
-        
     },
     getAllPosts: ({ commit }, posts) => {
         return new Promise((resolve, reject) => {
@@ -55,6 +54,7 @@ export default {
     },
     deletePost: ({ commit }, postId) => {
             instance.delete('/post/' + postId)
+            console.log(postId)
             .then(response => {
                 const postDeleted = JSON.parse(response.data);
                 commit('setPosts', postDeleted);
@@ -64,6 +64,9 @@ export default {
                 console.log(error);
             })
     },
+
+    ///////////////////  COMMENTAIRES   ////////////////////////
+
     getAllComs: ({ commit }, comInfos) => {
         return new Promise((resolve, reject) => {
             instance.get('/post/' + comInfos + '/comments')
@@ -71,7 +74,7 @@ export default {
                 const com = JSON.parse(response.data);
                 commit('setComs', com);
                 resolve(response);
-                console.log(resolve)
+                console.log(response)
             })
             .catch((error) => {
                 reject(error);
@@ -90,9 +93,34 @@ export default {
                 console.log(comInfos)
             })
             .catch((error) => {
-                commit('setPosts', null);
+                commit('setComs', null);
                 reject(error);
             })
         });
+    },
+    modifyCom: ({ commit }, com ) => {
+        return new Promise((resolve, reject) => {
+            instance.put('/post/comments/' + com.id, com.data)
+            .then((response) => {
+                const modifyCom = JSON.parse(response.data);
+                commit('setComs', modifyCom);
+                resolve(response);
+            })
+            .catch((error) => {
+                commit('setComs', null);
+                reject(error);
+            })
+        });
+    },
+    deleteCom: ({ commit }, comId) => {
+            instance.delete("/post/comments/" + comId)
+            .then(response => {
+                const comDeleted = JSON.parse(response.data);
+                commit('setComs', comDeleted);
+                console.log(response)
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 }

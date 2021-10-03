@@ -10,8 +10,6 @@ if (token) {
   axios.defaults.headers.common['Authorization'] = token;
 }
 
-
-
 const app = createApp(App);
 
 app.use(router);

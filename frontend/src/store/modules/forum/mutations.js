@@ -3,6 +3,7 @@ export default {
         state.posts = post;
     },
     setComs(state, com) {
+        console.log(com)
         state.comments = com;
     }
 }

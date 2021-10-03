@@ -23,7 +23,7 @@ export default {
                     id: 1,
                     userId: "",
                     postId: "",
-                    content: `J'ai réussi à afficher mon premier commentaire wal hamdoulillah !`,
+                    comContent: `J'ai réussi à afficher mon premier commentaire wal hamdoulillah !`,
                     date: "01/01/2022"
                 }
             ]

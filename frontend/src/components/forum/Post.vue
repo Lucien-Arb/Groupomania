@@ -110,24 +110,26 @@
               </p>
             </a>
             <a class="comments column is-5" @click="toggleCom(post.id)">
-              <p class="has-text-link">
+              <p class="has-text-link" @click="loadComs(post.id)">
                 <i class="far fa-comment"></i> Commentaires
               </p>
             </a>
           </div>
           <ul v-if="seeCom === post.id">
-            <div @click="loadComs(post.id)">
-              <comments 
-              v-for="com in comments" 
+            <comments
+              v-for="com in comments"
               :key="com.id"
               :comId="com.id"
               :postId="post.id"
-              :comContent="com.content"
+              :comContent="com.comContent"
               :date="com.date"
-              ></comments>
-            </div>
               
+            ></comments>
           </ul>
+          <form-comments 
+          v-if="seeCom === post.id"
+          :postId="post.id"
+          > </form-comments>
         </div>
       </li>
     </ul>
@@ -136,10 +138,12 @@
 
 <script>
 import comments from "./Comments.vue";
+import FormComments from "./FormComments.vue";
 
 export default {
   components: {
     comments,
+    FormComments,
   },
   data() {
     return {
@@ -160,9 +164,8 @@ export default {
       return this.$store.getters["forum/hasPosts"];
     },
     comments() {
-      console.log('test')
       return this.$store.state.forum.comments;
-    }
+    },
   },
   methods: {
     loadPosts() {
@@ -175,7 +178,8 @@ export default {
     deletePost(postId) {
       document.location.reload();
       try {
-        this.$store.dispatch("forum/deletePost", postId);
+        this.$store.dispatch("forum/deletePost", postId)
+        console.log(postId);
       } catch (error) {
         this.error =
           "You can't delete this post, try later or contact administrator.";
@@ -224,21 +228,18 @@ export default {
     },
     toggleCom(postId) {
       if (!this.seeCom) {
-        console.log(postId)
-        
+        console.log(postId);
+
         return (this.seeCom += postId);
-      } else  return (this.seeCom = null);
-      
+      } else return (this.seeCom = null);
     },
     loadComs(postId) {
-      console.log('test')
       try {
-        console.log('test')
         this.$store.dispatch("forum/getAllComs", postId);
-      } catch(error) {
+      } catch (error) {
         this.error = error.message || "Something went wrong !";
       }
-    }
+    },
   },
   mounted() {
     this.loadPosts();
@@ -247,7 +248,6 @@ export default {
 </script>
 
 <style scoped>
-
 button {
   border: none;
 }

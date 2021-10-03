@@ -19,7 +19,7 @@ export default {
             })
             .catch((error) => {
                 reject(error);
-            }) 
+            })
         })
     },
     modifyInfos: ({ commit }, userData) => {
