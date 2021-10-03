@@ -91,7 +91,7 @@ exports.updateComment = (req, res, next) => {
     let commentId = req.params.id;
     let sqlInserts1 = [commentId];
     let sqlInserts2 = [content, commentId, userId];
-    postsModels.updatePost(sqlInserts1, sqlInserts2)
+    postsModels.updateComment(sqlInserts1, sqlInserts2)
         .then((response) => {
             res.status(201).json(JSON.stringify(response));
         })
@@ -100,14 +100,16 @@ exports.updateComment = (req, res, next) => {
             res.status(400).json(JSON.stringify(error));
         })
 }
-exports.deleteComment = (req, res, next) => {
-    let commentId = req.params.id;
-    let sqlInserts = [commentId];
-    postsModels.deleteComment(sqlInserts)
-        .then((response) =>{
-            res.status(200).json(JSON.stringify(response));
-        })
-}
+// exports.deleteComment = (req, res, next) => {
+//     let commentId = req.params.id;
+//     let sqlInserts = [commentId];
+//     console.log(sqlInserts)
+//     postsModels.deleteComment(sqlInserts)
+//         .then((response) =>{
+//             res.status(200).json(JSON.stringify(response));
+//             console.log(response)
+//         })
+// }
 exports.deleteComment = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
@@ -115,7 +117,7 @@ exports.deleteComment = (req, res, next) => {
     let commentId = req.params.id;
     let sqlInserts1 = [commentId];
     let sqlInserts2 = [commentId, userId];
-    postsModels.deletePost(sqlInserts1, sqlInserts2)
+    postsModels.deleteComment(sqlInserts1, sqlInserts2)
         .then((response) =>{
             res.status(200).json(JSON.stringify(response));
         })
