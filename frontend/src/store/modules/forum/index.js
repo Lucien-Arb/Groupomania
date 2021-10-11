@@ -26,7 +26,8 @@ export default {
                     comContent: `J'ai réussi à afficher mon premier commentaire wal hamdoulillah !`,
                     date: "01/01/2022"
                 }
-            ]
+            ],
+            
         }
     },
     mutations,

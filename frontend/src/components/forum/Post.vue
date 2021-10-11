@@ -103,9 +103,11 @@
           <div
             class="columns is-mobile is-tablet is-desktop is-widescreen pt-2"
           >
+            <!-- <p @click="">See the likes</p> -->
             <a class="likes column is-4">
-              <p class="has-text-link">
-                <i class="far fa-heart has-text-danger"></i>
+              <p class="has-text-link" @click="sendLike(post.id, post.likes)">
+                <i class="far fa-heart has-text-danger" v-if="seeLike == post.likes"></i>
+                <i class="fas fa-heart has-text-danger" v-else></i>
                 {{ post.likes }} Likes
               </p>
             </a>
@@ -123,13 +125,12 @@
               :postId="post.id"
               :comContent="com.comContent"
               :date="com.date"
-              
             ></comments>
           </ul>
-          <form-comments 
-          v-if="seeCom === post.id"
-          :postId="post.id"
-          > </form-comments>
+          <form-comments
+            v-if="seeCom === post.id"
+            :postId="post.id"
+          ></form-comments>
         </div>
       </li>
     </ul>
@@ -137,12 +138,27 @@
 </template>
 
 <script>
-import comments from "./Comments.vue";
+import Comments from "./Comments.vue";
 import FormComments from "./FormComments.vue";
+import axios from 'axios';
+
+var token = localStorage.getItem('user');
+
+if (token != null) {
+    token = JSON.parse(token)['token'];
+}
+
+const instance = axios.create({
+    baseURL: 'http://localhost:3000/api/',
+    headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+    }
+});
 
 export default {
   components: {
-    comments,
+    Comments,
     FormComments,
   },
   data() {
@@ -154,6 +170,14 @@ export default {
       seeCom: null,
       comContent: "",
       date: "",
+      seeLike: false,
+      allLikes: [],
+      dataLike: {
+        liked: false,
+        nbLikes: "",
+        postId: "",
+        userId: "",
+      },
     };
   },
   computed: {
@@ -178,7 +202,7 @@ export default {
     deletePost(postId) {
       document.location.reload();
       try {
-        this.$store.dispatch("forum/deletePost", postId)
+        this.$store.dispatch("forum/deletePost", postId);
         console.log(postId);
       } catch (error) {
         this.error =
@@ -214,6 +238,7 @@ export default {
         content: this.content,
         postId: postId,
       });
+      console.log(postData);
 
       if (this.title === "" && this.content === "" && this.userId === null) {
         this.formIsValid = false;
@@ -224,12 +249,10 @@ export default {
           data: postData,
         });
       }
-      document.location.reload();
+      // document.location.reload();
     },
     toggleCom(postId) {
       if (!this.seeCom) {
-        console.log(postId);
-
         return (this.seeCom += postId);
       } else return (this.seeCom = null);
     },
@@ -240,9 +263,46 @@ export default {
         this.error = error.message || "Something went wrong !";
       }
     },
+    sendLike(postId, likes) {
+      const id = JSON.parse(localStorage.getItem("user"))["userId"];
+      console.log(this.allLikes)
+      this.allLikes.forEach(element => {
+        console.log('test')
+                if(element.postId == postId && element.userId == id){
+                    this.dataLike.nbLikes = likes+-1;
+                    this.dataLike.liked = true;
+                }
+            });
+      if (this.dataLike.liked === false) {
+        this.dataLike.nbLikes = likes + 1;
+      }
+
+      this.dataLike.postId = postId;
+      this.dataLike.userId = id;
+      const data = JSON.stringify(this.dataLike);
+      console.log(data);
+      console.log(postId, likes);
+      try {
+        this.$store.dispatch("forum/sendLikes", {
+          postId: postId,
+          userData: data,
+        });
+      } catch {
+        this.error = "Vous ne pouvez pas liker ce post.";
+      }
+    },
   },
   mounted() {
-    this.loadPosts();
+    this.loadPosts()
+    instance.get("http://localhost:3000/api/post/likes", {headers: {Authorization: 'Bearer ' + token }})
+            .then(response =>{
+                let likes = JSON.parse(response.data);
+                this.allLikes = likes;
+                console.log(likes)
+            })
+            .catch(error => {
+                console.log(error)
+            }); 
   },
 };
 </script>

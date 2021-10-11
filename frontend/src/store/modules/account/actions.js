@@ -1,6 +1,10 @@
 const axios = require('axios');
 
-const token = JSON.parse(localStorage.getItem('user'))['token'];
+var token = localStorage.getItem('user');
+
+if (token != null) {
+    token = JSON.parse(token)['token'];
+}
 
 const instance = axios.create({
     baseURL: 'http://localhost:3000/api/',

@@ -173,7 +173,6 @@ class PostsModels {
         return new Promise((resolve) => {
             connectdb.query(sql2, function (err, result, fields) {
                 if (err) throw err;
-
             });
             if (liked === false) {
                 connectdb.query(sql1, function (err, result, fields) {
@@ -187,7 +186,7 @@ class PostsModels {
                 connectdb.query(sql3, function (err, result, fields) {
                     if (err) throw err;
                     resolve({
-                        message: 'Like annulé!'
+                        message: 'Like supprimé!'
                     })
                 })
             }

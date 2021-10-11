@@ -3,7 +3,9 @@ export default {
         state.posts = post;
     },
     setComs(state, com) {
-        console.log(com)
         state.comments = com;
+    },
+    setLikes(state, like) {
+        state.likes = like;
     }
 }

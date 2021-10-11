@@ -12,7 +12,7 @@
       "
     >
       <h2 class="pb-4 has-text-centered title is-1">Exprimez-vous</h2>
-      <form action="" @submit="submitForm">
+      <form action="" @submit.prevent="submitForm">
         <div class="field">
           <label for="title" class="control">Titre :</label>
           <div class="control">
@@ -72,6 +72,7 @@ export default {
         title: this.title,
         content: this.content,
       })
+      console.log(postData)
 
       if (this.title === "" && this.content === "" && this.userId === null) {
         this.formIsValid = false;

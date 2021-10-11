@@ -84,7 +84,6 @@ export default {
       // const number = this.$refs[superId];
 
       const currentNum = document.getElementById(comId);
-      console.log(comId);
       if (currentNum.className === "dropdown") {
         return currentNum.classList.add("is-active");
       } else {
