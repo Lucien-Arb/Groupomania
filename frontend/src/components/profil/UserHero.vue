@@ -1,5 +1,5 @@
 <template>
-  <section class="hero is-medium is-link">
+  <section class="hero is-small is-link p-6">
     <div class="hero-body">
         <p class="title">
             Bienvenue {{ fullName }} !
@@ -16,8 +16,8 @@
 export default {
     computed: {
        fullName() {
-           const user = this.$store.state.account.users;
-          return user[0].firstName.charAt(0).toUpperCase() + user[0].firstName.slice(1) + ' ' + user[0].lastName.charAt(0).toUpperCase() + user[0].lastName.slice(1);
+        const user = this.$store.state.account.users;
+        return user[0].firstName.charAt(0).toUpperCase() + user[0].firstName.slice(1) + ' ' + user[0].lastName.charAt(0).toUpperCase() + user[0].lastName.slice(1);
        }
     }
     

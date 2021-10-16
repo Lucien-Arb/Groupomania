@@ -13,7 +13,7 @@ const router = createRouter ({
         { path: '/auth', component: UserAuth, meta: {requiresUnauth: true}},
         { path: '/forum', component: Forum, meta: {requiresAuth: true}},
         { path: '/profil', component: UsersProfil, meta: {requiresAuth: true}},
-        { path: '/modération', component: Mod, meta: {requiresAuth: true}},
+        { path: '/moderation', component: Mod, meta: {requiresAuth: true}},
     ]
 });
 

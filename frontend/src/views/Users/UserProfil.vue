@@ -121,6 +121,7 @@ export default {
       email: "",
       password: "",
       toggleForm: null,
+     // userId: "",
     };
   },
   components: {
@@ -128,8 +129,10 @@ export default {
   },
   computed: {
     userId() {
-      const user = this.$store.state.auth.user;
-      return JSON.parse(user).userId;
+      let user = this.$store.getters["auth/userData"];
+      const userId = JSON.parse(user)['userId'];
+      console.log(userId);
+      return userId;
     },
     users() {
       return this.$store.state.account.users;
@@ -141,7 +144,6 @@ export default {
   methods: {
     loadUserInfos() {
       try {
-        // console.log(this.$store.dispatch("account/getMyInfos"));
         this.$store.dispatch("account/getMyInfos");
       } catch (error) {
         this.error = error.message || "Something went wrong !";
@@ -185,7 +187,12 @@ export default {
   },
   mounted() {
     this.loadUserInfos();
-  },
+
+    // let user = this.$store.getters["auth/userData"];
+    //   const userId = JSON.parse(user)['userId'];
+    //   console.log(userId);
+    //   return this.userId === userId;
+  }
 };
 </script>
 

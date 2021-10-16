@@ -17,23 +17,6 @@ export default {
                     userId: "",
                     likes: 0
                 }
-            ],
-            comments : [
-                {
-                    id: 1,
-                    userId: "",
-                    postId: "",
-                    comContent: `J'ai réussi à afficher mon premier commentaire wal hamdoulillah !`,
-                    date: "01/01/2022"
-                }
-            ],
-            allLikes : [
-                {
-                    nbLikes: "",
-                    userId: "",
-                    postId: "",
-                    liked: false
-                }
             ]
         }
     },

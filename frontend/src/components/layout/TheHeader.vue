@@ -31,11 +31,16 @@
             ><a>Forum</a></router-link
           >
         </li>
-        <li>
-          <router-link to="/modération" class="navbar-item"
-            ><a>Devenir modérateur</a></router-link
+        <li v-if="this.admin == 1">
+          <router-link to="/moderation" class="navbar-item"
+            ><a>Modération</a></router-link
           >
         </li>
+        <!-- <li v-else>
+          <router-link to="/" class="navbar-item"
+            ><a>Modération</a></router-link
+          >
+        </li> -->
       </ul>
     </div>
     <div class="navbar-end">
@@ -55,6 +60,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      admin: "",
+    }
+  },
   methods: {
     logout() {
       return this.$store.dispatch("auth/logout");
@@ -66,6 +76,11 @@ export default {
       currentClass.classList.toggle("is-active");
     },
   },
+  mounted() {
+    let user = this.$store.getters["auth/userData"]
+    this.admin = JSON.parse(user)['moderation'];
+    console.log(this.admin)
+  }
 };
 </script>
 
@@ -84,6 +99,11 @@ a {
   color: #fff;
 }
 
+a:focus, a:focus-within, a:hover, a:active {
+    background-color: rgb(231, 229, 229)!important;
+    color: #363636!important;
+  }
+
 @media screen and (max-width: 1009px) {
   a {
     color: #fff; 
@@ -91,9 +111,6 @@ a {
   .navbar-menu {
     background-color: #363636 ;
   }
-  a:focus, a:hover, a:active {
-    background-color: rgb(231, 229, 229)!important;
-    color: #363636!important;
-  }
+ 
 } 
 </style>

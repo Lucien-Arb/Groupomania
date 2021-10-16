@@ -18,7 +18,6 @@ export default {
             .then((response) => {
                 const userData = JSON.parse(response.data);
                 commit('getUserInfos', userData);
-                console.log(response);
                 resolve(response);
             })
             .catch((error) => {

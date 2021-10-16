@@ -141,6 +141,7 @@
 import Comments from "./Comments.vue";
 import FormComments from "./FormComments.vue";
 import axios from 'axios';
+import { mapGetters } from 'vuex';
 
 var token = localStorage.getItem('user');
 
@@ -181,12 +182,16 @@ export default {
     };
   },
   computed: {
-    posts() {
-      return this.$store.state.forum.posts;
-    },
-    hasPosts() {
-      return this.$store.getters["forum/hasPosts"];
-    },
+    ...mapGetters({
+      posts: "forum/allPosts",
+      hasPosts: "forum/hasPosts"
+    }),
+    // posts() {
+    //   return this.$store.getters["forum/allPosts"];
+    // },
+    // hasPosts() {
+    //   return this.$store.getters["forum/hasPosts"];
+    // },
     comments() {
       return this.$store.state.forum.comments;
     },
@@ -203,7 +208,6 @@ export default {
       document.location.reload();
       try {
         this.$store.dispatch("forum/deletePost", postId);
-        console.log(postId);
       } catch (error) {
         this.error =
           "You can't delete this post, try later or contact administrator.";
@@ -249,6 +253,7 @@ export default {
           data: postData,
         });
       }
+      
       // document.location.reload();
     },
     toggleCom(postId) {
@@ -265,9 +270,8 @@ export default {
     },
     sendLike(postId, likes) {
       const id = JSON.parse(localStorage.getItem("user"))["userId"];
-      console.log(this.allLikes)
+
       this.allLikes.forEach(element => {
-        console.log('test')
                 if(element.postId == postId && element.userId == id){
                     this.dataLike.nbLikes = likes+-1;
                     this.dataLike.liked = true;
@@ -280,25 +284,26 @@ export default {
       this.dataLike.postId = postId;
       this.dataLike.userId = id;
       const data = JSON.stringify(this.dataLike);
-      console.log(data);
-      console.log(postId, likes);
       try {
         this.$store.dispatch("forum/sendLikes", {
           postId: postId,
           userData: data,
         });
+        
       } catch {
         this.error = "Vous ne pouvez pas liker ce post.";
       }
     },
   },
-  mounted() {
+  created() {
     this.loadPosts()
+  },
+  mounted() {
+    
     instance.get("http://localhost:3000/api/post/likes", {headers: {Authorization: 'Bearer ' + token }})
             .then(response =>{
                 let likes = JSON.parse(response.data);
                 this.allLikes = likes;
-                console.log(likes)
             })
             .catch(error => {
                 console.log(error)

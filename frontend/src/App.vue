@@ -40,6 +40,10 @@ html, body {
     padding:0;
 }
 
+#app {
+  background-color: #f3f1f1;
+}
+
 h1 {
   font-size: 1.7rem;
 }

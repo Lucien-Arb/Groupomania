@@ -19,19 +19,16 @@ export default {
     
     ///////////////////  POSTS ///////////////////
 
-    sendPost: ({
-        commit
-    }, userInfos) => {
+    sendPost: ({ commit }, userInfos) => {
         return new Promise((resolve, reject) => {
             instance.post('/post', userInfos)
                 .then((response) => {
                     const post = JSON.parse(response.data);
-                    console.log(userInfos);
-                    commit('setPosts', post);
+                    commit('addPost', post);
                     resolve(response);
                 })
                 .catch((error) => {
-                    commit('setPosts', null);
+                    commit('addPost', null);
                     reject(error);
                 })
         });
@@ -53,19 +50,17 @@ export default {
                 })
         });
     },
-    getAllPosts: ({
-        commit
-    }, posts) => {
+    getAllPosts: ({ commit }) => {
         return new Promise((resolve, reject) => {
-            instance.get('/post', posts)
+            instance.get('/post')
                 .then((response) => {
                     const posts = JSON.parse(response.data);
+                    console.log(posts)
                     commit('setPosts', posts);
                     resolve(response);
                 })
                 .catch((error) => {
                     reject(error);
-                    console.log(error);
                 })
         })
     },
@@ -73,11 +68,9 @@ export default {
         commit
     }, postId) => {
         instance.delete('/post/' + postId)
-        console.log(postId)
             .then(response => {
                 const postDeleted = JSON.parse(response.data);
                 commit('setPosts', postDeleted);
-                console.log(response)
             })
             .catch(error => {
                 console.log(error);
@@ -88,9 +81,9 @@ export default {
 
     getAllComs: ({
         commit
-    }, comInfos) => {
+    }, postId) => {
         return new Promise((resolve, reject) => {
-            instance.get('/post/' + comInfos + '/comments')
+            instance.get('/post/' + postId + '/comments')
                 .then((response) => {
                     const com = JSON.parse(response.data);
                     commit('setComs', com);
