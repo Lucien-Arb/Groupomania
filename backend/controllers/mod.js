@@ -20,7 +20,6 @@ exports.deletePost = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const mod = decodedToken.moderation;
-    console.log(mod);
     if(mod == 1){
         let postId = req.params.id;
         let sqlInserts = [postId];
@@ -36,8 +35,10 @@ exports.getAllComments = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const mod = decodedToken.moderation;
+    let postId = req.params.id;
+    let sqlInserts = [postId];
     if(mod == 1){
-        modModels.getAllComments()
+        modModels.getAllComments(sqlInserts)
             .then((response) =>{
                 res.status(200).json(JSON.stringify(response));
             })

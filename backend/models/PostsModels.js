@@ -125,8 +125,7 @@ class PostsModels {
     }
     deleteComment(sqlInserts1, sqlInserts2) {
         let sql1 = 'SELECT * FROM comments where id = ?';
-        console.log(sql1)
-        sql1 = mysql.format(sql1, sqlInserts1);
+         sql1 = mysql.format(sql1, sqlInserts1);
         return new Promise((resolve, reject) => {
             connectdb.query(sql1, function (err, result, fields) {
                 if (err) throw err;
@@ -140,13 +139,11 @@ class PostsModels {
                         resolve({
                             message: 'Commentaire supprimé !'
                         });
-                        console.warn(resolve)
                     })
                 } else {
                     reject({
                         error: 'fonction indisponible'
                     });
-                    console.warn(reject)
                 }
 
             });
