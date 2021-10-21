@@ -17,11 +17,14 @@ const router = createRouter ({
     ]
 });
 
-router.beforeEach(function(to, _, next) {
+router.beforeResolve(function(to, _, next) {
+    console.log('test');
     if (to.meta.requiresAuth && !store.getters['auth/isAuthenticated']) {
+      console.log('test');
       next('/auth');
-    } else if (to.meta.requiresUnauth && store.getters['auth/isAuthenticated']) {
-      next('/forum');
+    } else if (to.meta.requiresUnauth && store.getters['auth/isAuthenticated'] == true) {
+      console.log(store.getters['auth/isAuthenticated'], 'test router guard');
+      next({path: '/forum', replace: true});
     } else {
       next();
     }

@@ -19,7 +19,7 @@
         <span aria-hidden="true"></span>
       </a>
     </div>
-    <div class="navbar-menu">
+    <div class="navbar-menu" v-if="isConnected == connected">
       <ul class="navbar-start pt-2 ml-6">
         <li>
           <router-link to="/profil" class="navbar-item"
@@ -38,7 +38,7 @@
         </li>
       </ul>
     </div>
-    <div class="navbar-start">
+    <div class="navbar-start" v-if="isConnected == connected">
       <div class="navbar-item">
         <div class="buttons">
           <router-link
@@ -58,11 +58,23 @@ export default {
   data() {
     return {
       admin: "",
+      isConnected: "",
+    }
+  },
+  computed: {
+    connected() {
+      console.log(this.$store.getters['auth/isAuthenticated'])
+      if (this.$store.getters['auth/isAuthenticated'] == 1) {
+        return this.isConnected == 1
+      } else {
+        return null;
+      }
     }
   },
   methods: {
     logout() {
-      return this.$store.dispatch("auth/logout");
+      this.$store.dispatch("auth/logout");
+      return this.$router.replace("/auth");
     },
     toogleBurger() {
       const currentId = document.getElementById("burger");
@@ -77,7 +89,6 @@ export default {
       this.admin = JSON.parse(user)['moderation'];
       console.log(this.admin)
     }
-    
   }
 };
 </script>

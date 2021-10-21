@@ -10,7 +10,6 @@ export default {
             commit;
             instance.post('/signup', userInfos)
                 .then((response) => {
-                    commit('logUser', userInfos);
                     commit('setStatus', 'created');
                     resolve(response);
                 })
@@ -35,7 +34,7 @@ export default {
                     localStorage.setItem('user', user);
                     commit('loginStop', null);
                     commit('setStatus', 'loggedIn');
-                    commit('logUser', {userId : log.userId, token: log.token, moderation: log.moderation});
+                    commit('logUser', user);
                     resolve(response);
                 })
                 .catch((error) => {

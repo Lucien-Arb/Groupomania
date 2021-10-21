@@ -128,9 +128,9 @@ export default {
   },
   computed: {
     userId() {
-      // let user = this.$store.getters["auth/userData"];
-      // return JSON.parse(user)['userId'];
-      return 1;
+      let user = this.$store.getters["auth/userData"];
+      return JSON.parse(user)['userId'];
+      //return 1;
     },
     users() {
       return this.$store.state.account.users;

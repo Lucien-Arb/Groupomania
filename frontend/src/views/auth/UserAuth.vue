@@ -133,6 +133,7 @@ export default {
         if (this.mode === "login") {
           this.$store.dispatch("auth/login", login);
           this.$store.dispatch("auth/fetchAccessUser", login);
+          return this.$router.replace('/forum');
         } else {
           this.$store.dispatch("auth/signup", signup);
           this.mode = "login";
