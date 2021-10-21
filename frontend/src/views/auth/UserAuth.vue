@@ -8,7 +8,7 @@
         is-10-mobile
         is-half-widescreen
         p-6">
-        <h1>{{ submitButtonCaption }}</h1>
+        <h1 class="title is-3">{{ submitButtonCaption }}</h1>
         <div class="columns has-text-centered mt-1">
           <p v-if="mode == 'login'" class="column">Vous n'avez pas de compte ?<br> <a @click="switchAuthMode()">Créer un compte</a></p>
           <p v-else class="column">Vous avez déjà un compte ?<br> <a @click="switchAuthMode()">Se connecter</a></p>
@@ -107,7 +107,7 @@ export default {
     ...mapState('auth', ['user', 'status']),
   },
   methods: {
-    submitForm() {
+    async submitForm() {
       this.formIsValid = true;
       if (
         this.email === "" ||
@@ -131,11 +131,11 @@ export default {
       };
 
         if (this.mode === "login") {
-          this.$store.dispatch("auth/login", login);
-          this.$store.dispatch("auth/fetchAccessUser", login);
+          await this.$store.dispatch("auth/login", login);
+          await this.$store.dispatch("auth/fetchAccessUser", login);
           return this.$router.replace('/forum');
         } else {
-          this.$store.dispatch("auth/signup", signup);
+          await this.$store.dispatch("auth/signup", signup);
           this.enterYourInfo = true;
           this.email = "";
           this.password = "";

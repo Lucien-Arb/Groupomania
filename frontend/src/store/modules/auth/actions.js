@@ -31,7 +31,6 @@ export default {
                         moderation: log.moderation
                     })
                     localStorage.setItem('user', user);
-                    console.log(response.data, userInfos, user, log)
                     commit('loginStop', null);
                     commit('setStatus', 'loggedIn');
                     commit('logUser', user);
