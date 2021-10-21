@@ -136,8 +136,6 @@ export default {
           return this.$router.replace('/forum');
         } else {
           this.$store.dispatch("auth/signup", signup);
-          this.mode = "login";
-          this.wantToConnect = true;
           this.enterYourInfo = true;
           this.email = "";
           this.password = "";

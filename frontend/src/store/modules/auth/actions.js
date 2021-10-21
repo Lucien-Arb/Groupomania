@@ -24,7 +24,6 @@ export default {
         return new Promise((resolve, reject) => {
             instance.post('/login', userInfos)
                 .then((response) => {
-                    console.log(response.data, userInfos)
                     const log = JSON.parse(response.data);
                     const user = JSON.stringify({
                         userId: log.userId,
@@ -32,6 +31,7 @@ export default {
                         moderation: log.moderation
                     })
                     localStorage.setItem('user', user);
+                    console.log(response.data, userInfos, user, log)
                     commit('loginStop', null);
                     commit('setStatus', 'loggedIn');
                     commit('logUser', user);

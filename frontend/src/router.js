@@ -4,6 +4,7 @@ import Forum from './views/Forum/Forum.vue';
 import UsersProfil from './views/Users/UserProfil.vue';
 import UserAuth from './views/auth/UserAuth.vue';
 import Mod from './views/Users/Mod.vue';
+import NotFound from './views/NotFound.vue';
 import store from './store/index.js';
 
 const router = createRouter ({
@@ -14,17 +15,18 @@ const router = createRouter ({
         { path: '/forum', component: Forum, meta: {requiresAuth: true}},
         { path: '/profil', component: UsersProfil, meta: {requiresAuth: true}},
         { path: '/moderation', component: Mod, meta: {requiresAuth: true}},
+        { path: '/:notFound(.*)', component: NotFound }
     ]
 });
 
-router.beforeResolve(function(to, _, next) {
+router.beforeEach(function(to, _, next) {
     console.log('test');
     if (to.meta.requiresAuth && !store.getters['auth/isAuthenticated']) {
       console.log('test');
       next('/auth');
-    } else if (to.meta.requiresUnauth && store.getters['auth/isAuthenticated'] == true) {
+    } else if (to.meta.requiresUnauth && store.getters['auth/isAuthenticated']) {
       console.log(store.getters['auth/isAuthenticated'], 'test router guard');
-      next({path: '/forum', replace: true});
+      next({path: '/forum', push: true});
     } else {
       next();
     }

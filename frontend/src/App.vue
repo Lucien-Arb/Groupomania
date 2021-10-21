@@ -16,7 +16,6 @@ import { mapActions } from 'vuex';
 
 
 export default {
-
   components: {
     TheHeader,
     },

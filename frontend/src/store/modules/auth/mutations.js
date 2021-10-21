@@ -3,6 +3,7 @@ export default {
         state.status = status;
     },
     logUser: function (state, user) {
+        console.log(state.user, user)
         state.user = user;
     },
     loginStop: (state, errorMessage) => {
