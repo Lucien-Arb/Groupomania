@@ -112,7 +112,6 @@ export default {
       }
     },
     deletePost(postId) {
-      // document.location.reload();
       try {
         this.$store.dispatch("admin/deletePost", postId);
       } catch (error) {

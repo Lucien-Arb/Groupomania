@@ -106,7 +106,10 @@
             <!-- <p @click="">See the likes</p> -->
             <a class="likes column is-4">
               <p class="has-text-link" @click="sendLike(post.id, post.likes)">
-                <i class="far fa-heart has-text-danger" v-if="seeLike == post.likes"></i>
+                <i
+                  class="far fa-heart has-text-danger"
+                  v-if="seeLike == post.likes"
+                ></i>
                 <i class="fas fa-heart has-text-danger" v-else></i>
                 {{ post.likes }} Likes
               </p>
@@ -140,21 +143,21 @@
 <script>
 import Comments from "./Comments.vue";
 import FormComments from "./FormComments.vue";
-import axios from 'axios';
-import { mapGetters } from 'vuex';
+import axios from "axios";
+import { mapGetters } from "vuex";
 
-var token = localStorage.getItem('user');
+var token = localStorage.getItem("user");
 
 if (token != null) {
-    token = JSON.parse(token)['token'];
+  token = JSON.parse(token)["token"];
 }
 
 const instance = axios.create({
-    baseURL: 'http://localhost:3000/api/',
-    headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token
-    }
+  baseURL: "http://localhost:3000/api/",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + token,
+  },
 });
 
 export default {
@@ -184,14 +187,8 @@ export default {
   computed: {
     ...mapGetters({
       posts: "forum/allPosts",
-      hasPosts: "forum/hasPosts"
+      hasPosts: "forum/hasPosts",
     }),
-    // posts() {
-    //   return this.$store.getters["forum/allPosts"];
-    // },
-    // hasPosts() {
-    //   return this.$store.getters["forum/hasPosts"];
-    // },
     comments() {
       return this.$store.state.forum.comments;
     },
@@ -205,7 +202,6 @@ export default {
       }
     },
     deletePost(postId) {
-      document.location.reload();
       try {
         this.$store.dispatch("forum/deletePost", postId);
       } catch (error) {
@@ -253,7 +249,7 @@ export default {
           data: postData,
         });
       }
-      
+
       // document.location.reload();
     },
     toggleCom(postId) {
@@ -271,12 +267,12 @@ export default {
     sendLike(postId, likes) {
       const id = JSON.parse(localStorage.getItem("user"))["userId"];
 
-      this.allLikes.forEach(element => {
-                if(element.postId == postId && element.userId == id){
-                    this.dataLike.nbLikes = likes+-1;
-                    this.dataLike.liked = true;
-                }
-            });
+      this.allLikes.forEach((element) => {
+        if (element.postId == postId && element.userId == id) {
+          this.dataLike.nbLikes = likes + -1;
+          this.dataLike.liked = true;
+        }
+      });
       if (this.dataLike.liked === false) {
         this.dataLike.nbLikes = likes + 1;
       }
@@ -293,21 +289,27 @@ export default {
       } catch {
         this.error = "Vous ne pouvez pas liker ce post.";
       }
+      this.getLikes();
     },
+    getLikes() {
+       instance
+      .get("http://localhost:3000/api/post/likes", {
+        headers: { Authorization: "Bearer " + token },
+      })
+      .then((response) => {
+        let likes = JSON.parse(response.data);
+        this.allLikes = likes;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
   },
   created() {
-    this.loadPosts()
+    this.loadPosts();
   },
   mounted() {
-    
-    instance.get("http://localhost:3000/api/post/likes", {headers: {Authorization: 'Bearer ' + token }})
-            .then(response =>{
-                let likes = JSON.parse(response.data);
-                this.allLikes = likes;
-            })
-            .catch(error => {
-                console.log(error)
-            }); 
+   this.getLikes();
   },
 };
 </script>

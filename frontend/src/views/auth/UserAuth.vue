@@ -10,9 +10,12 @@
         p-6">
         <h1>{{ submitButtonCaption }}</h1>
         <div class="columns has-text-centered mt-1">
-          <p v-if="mode == 'login'" class="column">Vous n'avez pas de compte ? <a @click="switchAuthMode()">Créer un compte</a></p>
-          <p v-else class="column">Vous avez déjà un compte ? <a @click="switchAuthMode()">Se connecter</a></p>
+          <p v-if="mode == 'login'" class="column">Vous n'avez pas de compte ?<br> <a @click="switchAuthMode()">Créer un compte</a></p>
+          <p v-else class="column">Vous avez déjà un compte ?<br> <a @click="switchAuthMode()">Se connecter</a></p>
         </div>
+         <h4 v-if="enterYourInfo == true" class="m-4 columns has-text-centered">
+           <span class="has-text-info title is-5"> Entrez votre email et votre mot de passe.</span>
+        </h4>
         <form action="" @submit.prevent="submitForm" class="pt-0">
           <div class="field" v-if="!wantToConnect">
             <label for="firstName" class="control">Firstname</label>
@@ -21,7 +24,7 @@
                 type="text"
                 id="firstName"
                 class="input"
-                placeholder="Tchoppi..."
+                placeholder="Arthur..."
                 v-model.trim="firstName"
               />
             </div>
@@ -33,7 +36,7 @@
                 type="text"
                 id="lastName"
                 class="input"
-                placeholder="Sampedro..."
+                placeholder="Durand..."
                 v-model.trim="lastName"
               />
             </div>
@@ -45,7 +48,7 @@
                 type="email"
                 id="email"
                 class="input"
-                placeholder="sampedro.tchoppi@gmail.com..."
+                placeholder="jules@gmail.com..."
                 v-model.trim="email"
               />
             </div>
@@ -57,20 +60,19 @@
                 type="password"
                 id="password"
                 class="input"
-                placeholder="Minimum 8 caractères"
                 v-model.trim="password"
               />
             </div>
           </div>
-          <div class="field is-grouped buttons is-centered">
-            <!-- <p v-if="!formIsValid" class="m-4">
+          <div class="field is-grouped buttons is-centered is-justify-content-center">
+            <h4 v-if="!formIsValid || mode == 'login' && status == 'error_login'  " class="m-4 content has-text-danger">
               Vérifiez les champs. Votre email doit contenir '@' et votre mot de
               passe doit être d'au moins 8 caractères.
-            </p> -->
-            <button  class="button is-normal is-primary column is-centered">
-              <span >{{ submitButtonCaption }}</span>
+            </h4>
+            <button  class="button is-normal is-primary mt-4 pl-6 pr-6" to="/forum">
+              <span v-if="status == 'loading' ">Connexion en cours...</span>
+              <span v-else>{{ submitButtonCaption }}</span>
             </button>
-            <p v-if="handleError() == true"> Erreur !</p>
           </div>
         </form>
       </div>
@@ -91,6 +93,7 @@ export default {
       formIsValid: true,
       mode: "login",
       wantToConnect: true,
+      enterYourInfo: false,
     };
   },
   computed: {
@@ -101,11 +104,10 @@ export default {
         return "Créer un compte";
       }
     },
-    ...mapState('auth', ['user'])
+    ...mapState('auth', ['user', 'status']),
   },
   methods: {
-    
-    async submitForm() {
+    submitForm() {
       this.formIsValid = true;
       if (
         this.email === "" ||
@@ -116,32 +118,29 @@ export default {
         return;
       }
 
-      const actionPayloadSignup = {
+      const signup = {
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
         password: this.password,
       };
 
-      const actionPayloadLogin = {
+      const login = {
         email: this.email,
         password: this.password,
       };
 
-      try {
         if (this.mode === "login") {
-          await this.$store.dispatch("auth/login", actionPayloadLogin);
+          this.$store.dispatch("auth/login", login);
+          this.$store.dispatch("auth/fetchAccessUser", login);
         } else {
-          await this.$store.dispatch("auth/signup", actionPayloadSignup);
+          this.$store.dispatch("auth/signup", signup);
+          this.mode = "login";
+          this.wantToConnect = true;
+          this.enterYourInfo = true;
+          this.email = "";
+          this.password = "";
         }
-        this.$router.replace("/profil");
-      } catch (err) {
-        this.error =
-          err.message ||
-          `Nous n'avons pas pu vous authentifier, esssayez à nouveau.`;
-      }
-      
-      this.isLoading = false;
     },
     switchAuthMode() {
       if (this.mode === "login") {
@@ -151,9 +150,6 @@ export default {
         this.mode = "login";
         this.wantToConnect = true;
       }
-    },
-    handleError() {
-      this.error = null;
     },
     
   },

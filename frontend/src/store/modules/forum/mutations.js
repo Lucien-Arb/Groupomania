@@ -9,6 +9,7 @@ export default {
         state.comments = com;
     },
     setLikes(state, like) {
-        state.likes = like;
+        state.allLikes = like;
+        state.posts.likes = like;
     }
 }

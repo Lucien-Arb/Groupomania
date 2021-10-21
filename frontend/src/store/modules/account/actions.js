@@ -14,7 +14,7 @@ const instance = axios.create({
 export default {
     getMyInfos: ({ commit }, userData) => {
         return new Promise((resolve, reject) => {
-            instance.get('/auth/', userData)
+            instance.get('/auth', userData)
             .then((response) => {
                 const userData = JSON.parse(response.data);
                 commit('getUserInfos', userData);
@@ -27,12 +27,15 @@ export default {
     },
     modifyInfos: ({ commit }, userData) => {
         return new Promise((resolve, reject) => {
-            instance.put('/auth/', userData)
+            instance.put('/auth', userData)
             .then((response) => {
-                const modifyProfil = JSON.parse(response.data);
-                commit('getUserInfos', modifyProfil);
-                console.log(response)
                 resolve(response);
+                instance.get('/auth', userData)
+                    .then((response) => {
+                        const userData = JSON.parse(response.data);
+                        commit('getUserInfos', userData);
+                        resolve(response);
+                    })
             })
             .catch((error) => {
                 commit('getUserInfos', null);
@@ -40,16 +43,22 @@ export default {
             })
         })
     },
-    deleteUser: ({ commit }) => {
+    deleteUser: ({ commit }, userData) => {
+        return new Promise((resolve, reject) => {
             instance.delete('/auth/')
-            .then(response => {
-                const userDeleted = JSON.parse(response.data);
-                commit('getUserInfos', userDeleted);
-                console.log(userDeleted)
+            .then((response) => {
+                resolve(response);
+                instance.get('/auth', userData)
+                    .then((response) => {
+                        const userData = JSON.parse(response.data);
+                        commit('getUserInfos', userData);
+                        resolve(response);
+                    })
+
             })
-            .catch(error => {
-                commit('getUserInfos', null);
-                console.log(error)
+            .catch((error) => {
+                reject(error)
             })
+        })
     }
 }

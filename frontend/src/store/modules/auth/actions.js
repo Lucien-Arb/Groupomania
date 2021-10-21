@@ -9,12 +9,12 @@ export default {
         return new Promise((resolve, reject) => {
             commit;
             instance.post('/signup', userInfos)
-                .then(function (response) {
+                .then((response) => {
+                    commit('logUser', userInfos);
                     commit('setStatus', 'created');
                     resolve(response);
-                    console.log(userInfos);
                 })
-                .catch(function (error) {
+                .catch((error) => {
                     commit('setStatus', 'error_create');
                     reject(error);
                 })
@@ -25,6 +25,7 @@ export default {
         return new Promise((resolve, reject) => {
             instance.post('/login', userInfos)
                 .then((response) => {
+                    console.log(response.data, userInfos)
                     const log = JSON.parse(response.data);
                     const user = JSON.stringify({
                         userId: log.userId,
@@ -33,24 +34,24 @@ export default {
                     })
                     localStorage.setItem('user', user);
                     commit('loginStop', null);
-                    commit('setStatus', 'login');
+                    commit('setStatus', 'loggedIn');
                     commit('logUser', {userId : log.userId, token: log.token, moderation: log.moderation});
                     resolve(response);
                 })
                 .catch((error) => {
                     commit('setStatus', 'error_login');
-                    commit('loginStop', error.log.error);
                     commit('user', null);
                     reject(error);
                 })
         })
-
     },
     fetchAccessUser({ commit }) {
-        commit('logUser', localStorage.getItem('user'));
+        if (localStorage.getItem('user') !== "") {
+            commit('logUser', localStorage.getItem('user'));
+        }
     },
-    logout({commit, dispatch}) {
-            dispatch('fetchAccessUser');
+    logout({commit}) {
+           //  dispatch('fetchAccessUser');
             commit('logUser', localStorage.removeItem('user'));
     }
 

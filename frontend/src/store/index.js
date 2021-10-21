@@ -11,7 +11,7 @@ const store = createStore({
         forum: forumModule,
         account: accountModule,
         admin: adminModule
-    },
+    }
 })
 
 export default store;

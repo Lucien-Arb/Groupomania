@@ -21,7 +21,7 @@ router.beforeEach(function(to, _, next) {
     if (to.meta.requiresAuth && !store.getters['auth/isAuthenticated']) {
       next('/auth');
     } else if (to.meta.requiresUnauth && store.getters['auth/isAuthenticated']) {
-      next('/profil');
+      next('/forum');
     } else {
       next();
     }

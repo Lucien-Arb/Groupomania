@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="hasUser">
     <section class="hero is-small is-link p-6">
       <div class="hero-body">
         <p class="title">Espace administration de : {{ fullName }} !</p>
@@ -23,7 +23,7 @@
             <i class="fas fa-edit"></i>
           </span>
         </button>
-        <button class="button is-primary mr-4 mobile-style">
+        <button class="button is-primary mr-4 mobile-style" @click="toggleUsers()">
           <span>Utilisateurs</span>
           <span class="icon is-small">
             <i class="fas fa-users"></i>
@@ -32,7 +32,7 @@
       </div>
     </section>
     <users-posts v-show="seePosts == true"></users-posts>
-    <users-admin></users-admin>
+    <users-admin v-show="seeUsers == true"></users-admin>
   </div>
 </template>
 
@@ -48,12 +48,18 @@ export default {
   data() {
     return {
       seePosts: false,
+      seeUsers: false,
     };
   },
   computed: {
+    users() {
+      return this.$store.state.account.users;
+    },
+    hasUser() {
+      return this.$store.getters["account/hasUser"];
+    },
     fullName() {
       const user = this.$store.state.account.users;
-      
       return (
         user[0].firstName.charAt(0).toUpperCase() +
         user[0].firstName.slice(1) +
@@ -69,7 +75,22 @@ export default {
         return (this.seePosts += true);
       } else return (this.seePosts = false);
     },
+    toggleUsers() {
+      if (!this.seeUsers) {
+        return (this.seeUsers += true);
+      } else return (this.seeUsers = false);
+    },
+    loadUserInfos() {
+      try {
+        this.$store.dispatch("account/getMyInfos");
+      } catch (error) {
+        this.error = error.message || "Something went wrong !";
+      }
+    },
   },
+  mounted() {
+    this.loadUserInfos();
+  }
 };
 </script>
 

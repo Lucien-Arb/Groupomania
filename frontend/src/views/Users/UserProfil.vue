@@ -121,7 +121,6 @@ export default {
       email: "",
       password: "",
       toggleForm: null,
-     // userId: "",
     };
   },
   components: {
@@ -129,10 +128,9 @@ export default {
   },
   computed: {
     userId() {
-      let user = this.$store.getters["auth/userData"];
-      const userId = JSON.parse(user)['userId'];
-      console.log(userId);
-      return userId;
+      // let user = this.$store.getters["auth/userData"];
+      // return JSON.parse(user)['userId'];
+      return 1;
     },
     users() {
       return this.$store.state.account.users;
@@ -165,6 +163,7 @@ export default {
         console.log(userId);
         this.$store.dispatch("account/deleteUser", userId);
         this.$store.dispatch("auth/logout");
+        this.$router.replace("/auth")
       } catch (error) {
         this.error =
           "You can't delete this post, try later or contact administrator.";
@@ -182,7 +181,7 @@ export default {
       } else {
         this.$store.dispatch("account/modifyInfos", userData);
       }
-      document.location.reload();
+      // document.location.reload();
     },
   },
   mounted() {

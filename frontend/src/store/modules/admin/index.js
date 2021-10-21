@@ -18,6 +18,17 @@ export default {
                     likes: 0
                 }
             ]
+        },
+        {
+            users: [
+                {
+                    id: 1,
+                    firstName: "Tchopy",
+                    lastName: "Sampedro",
+                    email: "sampepe@gmail.com",
+                    password: "okokman",
+                }
+            ]
         }
     },
     mutations,

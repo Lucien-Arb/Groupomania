@@ -36,14 +36,9 @@
             ><a>Modération</a></router-link
           >
         </li>
-        <!-- <li v-else>
-          <router-link to="/" class="navbar-item"
-            ><a>Modération</a></router-link
-          >
-        </li> -->
       </ul>
     </div>
-    <div class="navbar-end">
+    <div class="navbar-start">
       <div class="navbar-item">
         <div class="buttons">
           <router-link
@@ -78,8 +73,11 @@ export default {
   },
   mounted() {
     let user = this.$store.getters["auth/userData"]
-    this.admin = JSON.parse(user)['moderation'];
-    console.log(this.admin)
+    if (user !== null) {
+      this.admin = JSON.parse(user)['moderation'];
+      console.log(this.admin)
+    }
+    
   }
 };
 </script>
