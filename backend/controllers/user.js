@@ -19,7 +19,6 @@ exports.signup = (req, res, next) => {
                     res.status(201).json(JSON.stringify(response))
                 })
                 .catch((error) =>{
-                    console.error(error);
                     res.status(400).json({error})
                 })
         })

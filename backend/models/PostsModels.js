@@ -37,9 +37,7 @@ class PostsModels {
                     sql2 = mysql.format(sql2, sqlInserts2);
                     connectdb.query(sql2, function (err, result, fields) {
                         if (err) throw err;
-                        resolve({
-                            message: 'Post modifié !'
-                        });
+                        resolve(result);
                     })
                 } else {
                     reject({
@@ -130,10 +128,8 @@ class PostsModels {
             connectdb.query(sql1, function (err, result, fields) {
                 if (err) throw err;
                 if (sqlInserts2[1] == result[0].userId) {
-                    console.log(sqlInserts2)
                     let sql2 = 'DELETE FROM comments WHERE id = ? AND userId = ?';
                     sql2 = mysql.format(sql2, sqlInserts2);
-                    console.log(sql2)
                     connectdb.query(sql2, function (err, result, fields) {
                         if (err) throw err;
                         resolve({

@@ -19,7 +19,6 @@ class UserModels {
     login(sqlInserts, password){
         let sql = 'SELECT * FROM users WHERE email = ?';
         sql = mysql.format(sql, sqlInserts);
-        
         return new Promise((resolve, reject) =>{
             connectdb.query(sql, function(err, result){
                 if (err) reject({ err });

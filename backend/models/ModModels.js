@@ -44,7 +44,26 @@ class ModModels {
                 resolve({message : 'Commentaire supprimé !'});
             })
         })
-    }
+    };
+    getAllUsers(){
+        let sql = "SELECT users.id, users.lastName, users.firstName, users.email FROM users ORDER BY users.lastName ASC";
+        return new Promise((resolve) =>{
+            connectdb.query(sql, function (err, result, fields) {
+                if (err) throw err;
+                resolve(result)
+            });
+        })
+    };
+    deleteUser(sqlInserts){
+        let sql = 'DELETE FROM users WHERE id = ?';
+        sql = mysql.format(sql, sqlInserts);
+        return new Promise((resolve) =>{
+            connectdb.query(sql, function (err, result, fields){
+                if (err) throw err;
+                resolve({message : 'Utilisateur supprimé !'});
+            })
+        })
+    };
 
 }
 
