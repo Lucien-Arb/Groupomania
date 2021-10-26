@@ -18,13 +18,13 @@
 
 ## Installation et démarrage du Backend
 - Ouvrez votre terminal. 
-- Allez dans le dossier backend : cd groupomania-master/backend. 
+- Allez dans le dossier backend : cd /backend. 
 - Installez toutes les dépendances du projet : npm install. 
 - Démarrez le serveur Node.js : npm run start. 
 
 ## Installation et démarrage du Frontend
 - Ouvrez votre terminal. 
-- Allez dans le dossier frontend : cd groupomania-master/frontend. 
+- Allez dans le dossier frontend : cd /frontend. 
 - Installez toutes les dépendances du projet : npm install. 
 - Démarrez l'application : npm run serve. 
 
