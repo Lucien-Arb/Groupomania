@@ -1,17 +1,17 @@
 <template>
   <div class="background">
-    <section class="section columns is-centered is-mobile">
+    <section class="section columns is-mobile is-centered">
       <div class=" card
         column
         is-half-desktop
         is-three-fifths-tablet
-        is-10-mobile
+        is-full-mobile
         is-half-widescreen
-        p-6">
+        ">
         <h1 class="title is-3">{{ submitButtonCaption }}</h1>
         <div class="columns has-text-centered mt-1">
-          <p v-if="mode == 'login'" class="column">Vous n'avez pas de compte ?<br> <a @click="switchAuthMode()">Créer un compte</a></p>
-          <p v-else class="column">Vous avez déjà un compte ?<br> <a @click="switchAuthMode()">Se connecter</a></p>
+          <p v-if="mode == 'login'" class="column">Vous n'avez pas de compte ?<br> <a @click="switchAuthMode()" class="groupomania-red">Créer un compte</a></p>
+          <p v-else class="column">Vous avez déjà un compte ?<br> <a @click="switchAuthMode()" class="groupomania-red">Se connecter</a></p>
         </div>
          <h4 v-if="enterYourInfo == true" class="m-4 columns has-text-centered">
            <span class="has-text-info title is-5"> Entrez votre email et votre mot de passe.</span>
@@ -69,7 +69,7 @@
               Vérifiez les champs. Votre email doit contenir '@' et votre mot de
               passe doit être d'au moins 8 caractères.
             </h4>
-            <button  class="button is-normal is-primary mt-4 pl-6 pr-6" to="/forum">
+            <button  class="button is-normal groupomania-red-back has-text-white mt-4 pl-6 pr-6" to="/forum">
               <span v-if="status == 'loading' ">Connexion en cours...</span>
               <span v-else>{{ submitButtonCaption }}</span>
             </button>
@@ -133,7 +133,7 @@ export default {
         if (this.mode === "login") {
           await this.$store.dispatch("auth/login", login);
           await this.$store.dispatch("auth/fetchAccessUser", login);
-          return this.$router.replace('/forum');
+          window.location.reload();
         } else {
           await this.$store.dispatch("auth/signup", signup);
           this.enterYourInfo = true;
@@ -183,5 +183,21 @@ form {
   padding: 60px;
   padding-left: 120px;
   box-sizing: border-box;
+}
+
+@media screen and (max-width: 768px) {
+
+  .background {
+  background: url(../../assets/paris2.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  display: block;
+  height: 100vh;
+  padding: 10px;
+  padding-left: 20px;
+  box-sizing: border-box;
+  }
 }
 </style>

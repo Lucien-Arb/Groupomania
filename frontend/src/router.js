@@ -20,12 +20,9 @@ const router = createRouter ({
 });
 
 router.beforeEach(function(to, _, next) {
-    console.log('test');
     if (to.meta.requiresAuth && !store.getters['auth/isAuthenticated']) {
-      console.log('test');
       next('/auth');
     } else if (to.meta.requiresUnauth && store.getters['auth/isAuthenticated']) {
-      console.log(store.getters['auth/isAuthenticated'], 'test router guard');
       next({path: '/forum', push: true});
     } else {
       next();

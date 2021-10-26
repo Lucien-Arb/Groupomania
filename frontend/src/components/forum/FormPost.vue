@@ -10,8 +10,9 @@
         is-half-widescreen
         p-6
       "
+      id="mobile-padding"
     >
-      <h2 class="pb-4 has-text-centered title is-1">Exprimez-vous</h2>
+      <h2 class="pb-4 has-text-centered title is-1" id="mobile-title">Exprimez-vous</h2>
       <form action="" @submit.prevent="submitForm">
         <div class="field">
           <label for="title" class="control">Titre :</label>
@@ -44,8 +45,9 @@
               Vérifiez les champs. Votre email doit contenir '@' et votre mot de
               passe doit être d'au moins 8 caractères.
             </p> -->
-            <button  class="button is-normal is-primary is-centered">
-              <span class="content-heading-weight">Submit form</span>
+            <button  class="button is-normal py-3 px-6
+             groupomania-red-back has-text-white is-centered">
+              <span class="content-heading-weight">Envoyer</span>
             </button>
             <!-- <p > Erreur !</p> -->
           </div>
@@ -87,5 +89,14 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+@media screen and (max-width: 769px) {
+  #mobile-padding {
+    padding: 1.7rem!important;
+  }
+
+  #mobile-title {
+    font-size: 2rem;
+  }
+}
 </style>

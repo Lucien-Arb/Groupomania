@@ -1,6 +1,6 @@
 <template>
-  <li>
-    <article class="media column">
+  <li >
+    <article class="media">
       <div class="media-content p-5 background">
         <div
           class="content columns is-mobile is-tablet is-desktop is-widescreen"
@@ -12,7 +12,7 @@
           <div class="column is-2">
             <div :id="comId" role="menu">
               <a @click="deleteCom(comId)">
-                <span class="icon has-text-danger pl-3"
+                <span class="icon has-text-danger pl-3" id="dropdown"
                   ><i class="fas fa-trash pr-2"></i
                 ></span>
               </a>
@@ -48,5 +48,13 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+@media screen and (max-width: 769px) {
+
+  #dropdown .pl-3 {
+   padding-right: 1rem!important;
+   padding-left: 0rem!important
+  }
+
+}
 </style>

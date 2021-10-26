@@ -1,38 +1,40 @@
 <template>
   <div v-if="hasUser">
-    <section class="hero is-small is-link p-6">
+    <section class="hero is-small groupomania-red-back2 p-6">
       <div class="hero-body">
-        <p class="title">Espace administration de : {{ fullName }} !</p>
-        <p class="subtitle">
+        <p class="title has-text-white">Espace administration de : {{ fullName }} !</p>
+        <p class="subtitle has-text-white">
           Les boutons ci-dessous vous permettent de voir les posts publiés sur
           le forum ainsi que leurs commentaires. Vous pourrez supprimé ceux qui
           ne respectent pas le réglement interne en cas de besoin.
         </p>
       </div>
     </section>
-    <section class="section columns is-centered is-mobile mt-6">
+    <section id="section"  class="section columns is-centered is-mobile mt-6">
       <div
         class="
-          column
-          is-half-desktop is-three-fifths-tablet is-10-mobile is-half-widescreen
+          column is-half-desktop is-three-fifths-tablet is-10-mobile is-half-widescreen
         "
       >
-        <button class="button is-info mr-4" @click="togglePosts()">
+      <div class="columns is-centered">
+        <button class="button groupomania-blue-back2 has-text-white " @click="togglePosts()">
           <span>Publications et Commentaires</span>
           <span class="icon is-small">
             <i class="fas fa-edit"></i>
           </span>
         </button>
-        <button class="button is-primary mr-4 mobile-style" @click="toggleUsers()">
+        <button id="centred-buttons" class="button groupomania-red-back has-text-white" @click="toggleUsers()">
           <span>Utilisateurs</span>
           <span class="icon is-small">
             <i class="fas fa-users"></i>
           </span>
         </button>
       </div>
+        
+      </div>
     </section>
-    <users-posts v-show="seePosts == true"></users-posts>
-    <users-admin v-show="seeUsers == true"></users-admin>
+    <users-posts v-show="seePosts == true" ></users-posts>
+    <users-admin v-show="seeUsers == true" ></users-admin>
   </div>
 </template>
 
@@ -95,4 +97,23 @@ export default {
 </script>
 
 <style scoped>
+.groupomania-red-back2 {
+    background-color: #d1525a!important;
+}
+
+#centred-buttons {
+    margin-left: 1.5rem;
+  }
+
+@media screen and (max-width: 769px) {
+  #centred-buttons {
+    margin-top: 1rem;
+    justify-content: center;
+    margin-left: 0rem;
+  }
+
+  #section {
+    margin-top: 0rem!important;
+  }
+}
 </style>

@@ -8,7 +8,7 @@ export default {
         return {
             posts: [
                 {
-                    id: 1,
+                    id: -1,
                     title: 'Tchopy c\'est un bon',
                     content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
                     fuga magni pariatur maxime minima mollitia illo consectetur amet,
@@ -20,7 +20,7 @@ export default {
             ],
             comments : [
                 {
-                    id: 1,
+                    id: -1,
                     userId: "",
                     postId: "",
                     comContent: `J'ai réussi à afficher mon premier commentaire wal hamdoulillah !`,

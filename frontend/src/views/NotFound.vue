@@ -8,11 +8,11 @@
             is-10-mobile
             is-half-widescreen
             p-6 has-text-centered">
-            <h2 class="title is-3 is-mobile-is-4 has-text-link ">Oups !... Mauvaise url, veuillez revenir à la page de connexion.</h2>
+            <h2 class="title is-3 is-mobile-is-4 groupomania-blue ">Oups !... Mauvaise url, veuillez revenir à la page de connexion.</h2>
            <div class="buttons ">
                 <router-link
                     to="/auth"
-                    class="button is-success title is-6 is-fullwidth"
+                    class="button groupomania-red-back title is-6 is-fullwidth has-text-white"
                     >Page de connexion</router-link
                 >
         </div>

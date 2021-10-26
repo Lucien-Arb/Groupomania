@@ -3,10 +3,10 @@
       <div
         class="
           column
-          is-half-desktop is-three-fifths-tablet is-10-mobile is-half-widescreen
+          is-half-desktop is-three-fifths-tablet is-12-mobile is-half-widescreen
         "
       >
-        <h3 class="title box p-5">Les utilisateurs sont classés par odre alphabétique en partant de la lettre "A".</h3>
+        <h3 class="title box p-5" id="title">Les utilisateurs sont classés par odre alphabétique en partant de la lettre "A".</h3>
         <ul class="" >
           <li class="pl-4 box mt-4"  v-for="user in users" :key="user.id">
             <div>
@@ -21,7 +21,7 @@
               <p class="buttons mt-4 mb-2">
                 <button
                   :id="user.id"
-                  class="button is-danger is-outlined"
+                  class="button groupomania-red-back has-text-white"
                   @click="deleteUser(user.id)"
                 >
                   <span>Supprimer</span>
@@ -70,6 +70,10 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+@media screen and (max-width: 769px) {
+  #title {
+    font-size: 1.5rem;
+  }
+}
 </style>

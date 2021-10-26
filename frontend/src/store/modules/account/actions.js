@@ -17,7 +17,7 @@ export default {
             instance.get('/auth', userData)
             .then((response) => {
                 const userData = JSON.parse(response.data);
-                commit('getUserInfos', userData);
+                commit('GET_INFOS', userData);
                 resolve(response);
             })
             .catch((error) => {
@@ -29,32 +29,22 @@ export default {
         return new Promise((resolve, reject) => {
             instance.put('/auth', userData)
             .then((response) => {
+                const userInfo = JSON.parse(userData);
+                commit('UPDATE_USER', userInfo)
                 resolve(response);
-                instance.get('/auth', userData)
-                    .then((response) => {
-                        const userData = JSON.parse(response.data);
-                        commit('getUserInfos', userData);
-                        resolve(response);
-                    })
             })
             .catch((error) => {
-                commit('getUserInfos', null);
                 reject(error);
             })
         })
     },
     deleteUser: ({ commit }, userData) => {
         return new Promise((resolve, reject) => {
-            instance.delete('/auth/')
+            instance.delete('/auth')
             .then((response) => {
+                const userInfo = JSON.parse(userData);
+                commit('DELETE_USER', userInfo);
                 resolve(response);
-                instance.get('/auth', userData)
-                    .then((response) => {
-                        const userData = JSON.parse(response.data);
-                        commit('getUserInfos', userData);
-                        resolve(response);
-                    })
-
             })
             .catch((error) => {
                 reject(error)

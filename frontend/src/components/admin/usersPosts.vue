@@ -7,13 +7,13 @@
       "
       v-if="hasPosts"
     >
-      <li v-for="post in posts" :key="post.id" class="card mt-4 p-6">
+      <li v-for="post in posts" :key="post.id" class="card mt-4 p-6" id="mobile-padding">
         <div>
           <div class="columns is-mobile is-tablet is-desktop is-widescreen">
             <div class="column is-8 pb-0">
-              <h3 class="title is-3">{{ post.title }}</h3>
+              <h3 class="title is-3" id="mobile-title">{{ post.title }}</h3>
             </div>
-            <div class="column is-2 ml-6 pt-4">
+            <div class="column is-2 ml-6 pt-4" id="dropdown">
               <a @click="deletePost(post.id)">
                 <span class="icon has-text-danger pl-6"
                   ><i class="fas fa-trash pr-2"></i
@@ -22,7 +22,7 @@
             </div>
           </div>
           <div>
-            <p class="subtitle is-6 has-text-info">
+            <p class="subtitle is-6 has-text-info" id="subtitle">
               Publié par :
               <strong class="has-text-info"
                 >{{ post.firstName }} {{ post.lastName }}</strong
@@ -138,5 +138,23 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+@media screen and (max-width: 769px) {
+  #mobile-padding {
+    padding: 1.7rem!important;
+  }
+
+  #mobile-title {
+    font-size: 1.6rem;
+  }
+
+  #dropdown {
+    flex: none;
+    margin-left: 0%!important;
+  }
+
+  #subtitle {
+    font-size: 0.9rem;
+  }
+}
 </style>

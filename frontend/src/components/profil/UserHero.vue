@@ -1,8 +1,8 @@
 <template>
-  <section class="hero is-small is-link p-6">
-    <div class="hero-body">
-      <p class="title">Bienvenue {{ fullName }} !</p>
-      <p class="subtitle">
+  <section class="hero is-small groupomania-red-back2 p-6">
+    <div class="hero-body ">
+      <p class="title has-text-white ">Bienvenue {{ fullName }} !</p>
+      <p class="subtitle has-text-white ">
         Vous êtes dans votre espace personnel. Ici, vous pourrez modifier vos
         informations.
       </p>
@@ -27,5 +27,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
+.groupomania-red-back2 {
+    background-color: #d1525a!important;
+}
+
 </style>

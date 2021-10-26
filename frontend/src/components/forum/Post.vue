@@ -7,13 +7,13 @@
       "
       v-if="hasPosts"
     >
-      <li v-for="post in posts" :key="post.id" class="card mt-4 p-6">
+      <li v-for="post in posts" :key="post.id" class="card mt-4 p-6" id="mobile-padding">
         <div>
           <div class="columns is-mobile is-tablet is-desktop is-widescreen">
             <div class="column is-8 pb-0">
-              <h3 class="title is-3">{{ post.title }}</h3>
+              <h3 class="title is-3" id="mobile-title">{{ post.title }}</h3>
             </div>
-            <div class="column is-6 is-offset-2">
+            <div class="column is-2 is-offset-2" id="dropdown">
               <div
                 class="dropdown"
                 @click="activeIt(post.id)"
@@ -80,14 +80,14 @@
                   ></textarea>
                 </div>
               </div>
-              <button class="button is-normal is-primary is-centered">
-                <span class="content-heading-weight">Submit form</span>
+              <button class="button is-normal px-6 groupomania-red-back has-text-white is-centered">
+                <span class="content-heading-weight">Publier</span>
               </button>
               <!-- <p > Erreur !</p> -->
             </form>
           </div>
           <div v-else>
-            <p class="subtitle is-6 has-text-info">
+            <p class="subtitle is-6 has-text-info" id="subtitle">
               Publié par :
               <strong class="has-text-info"
                 >{{ post.firstName }} {{ post.lastName }}</strong
@@ -128,11 +128,13 @@
               :postId="post.id"
               :comContent="com.comContent"
               :date="com.date"
+              :seeCom="post.id"
             ></comments>
           </ul>
           <form-comments
             v-if="seeCom === post.id"
             :postId="post.id"
+            :seeCom="post.id"
           ></form-comments>
         </div>
       </li>
@@ -143,15 +145,13 @@
 <script>
 import Comments from "./Comments.vue";
 import FormComments from "./FormComments.vue";
-import axios from "axios";
 import { mapGetters } from "vuex";
+import axios from "axios";
 
 var token = localStorage.getItem("user");
-
 if (token != null) {
   token = JSON.parse(token)["token"];
 }
-
 const instance = axios.create({
   baseURL: "http://localhost:3000/api/",
   headers: {
@@ -178,7 +178,6 @@ export default {
       allLikes: [],
       dataLike: {
         liked: false,
-        nbLikes: "",
         postId: "",
         userId: "",
       },
@@ -191,6 +190,9 @@ export default {
     }),
     comments() {
       return this.$store.state.forum.comments;
+    },
+    getLikes() {
+      return this.$store.state.forum.allLikes;
     },
   },
   methods: {
@@ -230,15 +232,11 @@ export default {
       } else return (this.modifyMyPost = null);
     },
     submitForm(postId) {
-      const id = JSON.parse(localStorage.getItem("user"))["userId"];
-
       const postData = JSON.stringify({
-        userId: id,
         title: this.title,
         content: this.content,
         postId: postId,
       });
-      console.log(postData);
 
       if (this.title === "" && this.content === "" && this.userId === null) {
         this.formIsValid = false;
@@ -248,9 +246,8 @@ export default {
           id: postId,
           data: postData,
         });
+        this.isClicked();
       }
-
-      // document.location.reload();
     },
     toggleCom(postId) {
       if (!this.seeCom) {
@@ -264,34 +261,34 @@ export default {
         this.error = error.message || "Something went wrong !";
       }
     },
-    sendLike(postId, likes) {
+      sendLike(postId, likes) {
       const id = JSON.parse(localStorage.getItem("user"))["userId"];
 
-      this.allLikes.forEach((element) => {
+      this.allLikes.forEach(element => {
         if (element.postId == postId && element.userId == id) {
-          this.dataLike.nbLikes = likes + -1;
-          this.dataLike.liked = true;
+            this.dataLike.nbLikes = likes+-1;
+            this.dataLike.liked = true;
+          } 
+          else if (this.dataLike.liked === false) {
+          this.dataLike.nbLikes = likes + 1;
         }
       });
-      if (this.dataLike.liked === false) {
-        this.dataLike.nbLikes = likes + 1;
-      }
 
       this.dataLike.postId = postId;
       this.dataLike.userId = id;
       const data = JSON.stringify(this.dataLike);
+
       try {
         this.$store.dispatch("forum/sendLikes", {
           postId: postId,
           userData: data,
         });
-        
+        window.location.reload();
       } catch {
         this.error = "Vous ne pouvez pas liker ce post.";
       }
-      this.getLikes();
     },
-    getLikes() {
+    likes() {
        instance
       .get("http://localhost:3000/api/post/likes", {
         headers: { Authorization: "Bearer " + token },
@@ -309,17 +306,37 @@ export default {
     this.loadPosts();
   },
   mounted() {
-   this.getLikes();
+    this.likes();
   },
 };
 </script>
 
 <style scoped>
+
 button {
   border: none;
 }
 
 button:hover {
   border: 0.5px solid;
+}
+
+@media screen and (max-width: 769px) {
+  #mobile-padding {
+    padding: 1.7rem!important;
+  }
+
+  #mobile-title {
+    font-size: 1.6rem;
+  }
+
+  #dropdown {
+    flex: none;
+    margin-left: 0%;
+  }
+
+  #subtitle {
+    font-size: 0.9rem;
+  }
 }
 </style>

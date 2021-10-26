@@ -12,7 +12,7 @@
       </div>
       <div class="field">
         <p class="control">
-          <button class="button is-success is-outlined">Publier</button>
+          <button class="button groupomania-red-back has-text-white">Publier</button>
         </p>
       </div>
     </div>
@@ -36,8 +36,6 @@ export default {
         content: this.content,
         comId: this.comId
       });
-      console.log(comData)
-      console.log(postId)
 
       if (this.content === "" && this.userId === null) {
         this.formIsValid = false;
@@ -48,7 +46,7 @@ export default {
           data: comData,
         });
       }
-     document.location.reload();
+      this.content = "";
     }
   },
 };

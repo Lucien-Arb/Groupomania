@@ -21,20 +21,20 @@ export default {
 
     sendPost: ({
         commit
-    }, userInfos) => {
+    }, newPost) => {
         return new Promise((resolve, reject) => {
-            instance.post('/post', userInfos)
+            instance.post('/post', newPost)
                 .then(response => {
-                    console.log(response);
-                    resolve()
+                    const post = JSON.parse(newPost);
+                    commit('ADD_POST', post);
+                    resolve(response)
                     instance.get('/post')
                         .then(response => {
                             const posts = JSON.parse(response.data);
-                            commit('setPosts', posts)
+                            commit('GET_POSTS', posts)
                         })
                 })
                 .catch((error) => {
-                    commit('setPosts', null);
                     reject(error);
                 })
         });
@@ -46,16 +46,17 @@ export default {
         return new Promise((resolve, reject) => {
             instance.put('/post/' + post.id, post.data)
                 .then(response => {
-                    console.log(response);
-                    resolve()
+                    const postInfo = JSON.parse(post.data);
+                    console.log(postInfo);
+                    commit('UPDATE_POST', postInfo);
+                    resolve(response);
                     instance.get('/post')
                         .then(response => {
                             const posts = JSON.parse(response.data);
-                            commit('setPosts', posts);
+                            commit('GET_POSTS', posts);
                         })
                 })
                 .catch((error) => {
-                    commit('setPosts', null);
                     reject(error);
                 })
         });
@@ -67,8 +68,7 @@ export default {
             instance.get('/post')
                 .then((response) => {
                     const posts = JSON.parse(response.data);
-                    console.log(posts);
-                    commit('setPosts', posts);
+                    commit('GET_POSTS', posts);
                     resolve(response);
                 })
                 .catch((error) => {
@@ -78,20 +78,23 @@ export default {
     },
     deletePost: ({
         commit
-    }, postId) => {
+    }, post) => {
         return new Promise((resolve, reject) => {
-        instance.delete('/post/' + postId)
-            .then((response) => {
-                resolve(response);
-                instance.get('/post')
+            console.log(post);
+            instance.delete('/post/' + post)
+                .then((response) => {
+                    const postInfo = JSON.parse(post);
+                    commit('DELETE_POST', postInfo);
+                    resolve(response);
+                    instance.get('/post')
                         .then(response => {
                             const posts = JSON.parse(response.data);
-                            commit('setPosts', posts);
+                            commit('GET_POSTS', posts);
                         })
-            })
-            .catch((error) => {
-                reject(error);
-            })
+                })
+                .catch((error) => {
+                    reject(error);
+                })
         })
     },
 
@@ -104,12 +107,11 @@ export default {
             instance.get('/post/' + postId + '/comments')
                 .then((response) => {
                     const com = JSON.parse(response.data);
-                    commit('setComs', com);
+                    commit('GET_COMS', com);
                     resolve(response);
                 })
                 .catch((error) => {
                     reject(error);
-                    console.log(error);
                 })
         })
     },
@@ -119,36 +121,38 @@ export default {
         return new Promise((resolve, reject) => {
             instance.post('/post/' + comInfos.id + '/comments', comInfos.data)
                 .then((response) => {
+                    const com = JSON.parse(comInfos.data);
+                    commit('ADD_COM', com);
                     resolve(response);
                     instance.get('/post/' + comInfos.id + '/comments')
                         .then((response) => {
                             const com = JSON.parse(response.data);
-                            commit('setComs', com);
+                            commit('GET_COMS', com);
                             resolve(response);
                         })
                 })
                 .catch((error) => {
-                    commit('setComs', null);
                     reject(error);
                 })
         });
     },
     modifyCom: ({
         commit
-    }, com) => {
+    }, comInfos) => {
         return new Promise((resolve, reject) => {
-            instance.put('/post/comments/' + com.id, com.data)
+            instance.put('/post/comments/' + comInfos.id, comInfos.data)
                 .then((response) => {
+                    const com = JSON.parse(comInfos.data);
+                    commit('UPDATE_COM', com);
                     resolve(response);
-                    instance.get('/post/' + com.id + '/comments')
+                    instance.get('/post/' + comInfos.id + '/comments')
                         .then((response) => {
                             const com = JSON.parse(response.data);
-                            commit('setComs', com);
+                            commit('GET_COMS', com);
                             resolve(response);
                         })
                 })
                 .catch((error) => {
-                    commit('setComs', null);
                     reject(error);
                 })
         });
@@ -158,20 +162,22 @@ export default {
     }, comId) => {
         return new Promise((resolve, reject) => {
             instance.delete("/post/comments/" + comId)
-            .then((response) => {
-                resolve(response);
-                instance.get('/post/' + comId + '/comments')
+                .then((response) => {
+                    const com = JSON.parse(comId);
+                    commit('DELETE_COM', com);
+                    resolve(response);
+                    instance.get('/post/' + comId + '/comments')
                         .then((response) => {
                             const com = JSON.parse(response.data);
-                            commit('setComs', com);
+                            commit('GET_COMS', com);
                             resolve(response);
                         })
-            })
-            .catch((error) => {
-                reject(error);
-            })
+                })
+                .catch((error) => {
+                    reject(error);
+                })
         })
-        
+
     },
 
 
@@ -179,9 +185,9 @@ export default {
 
     getAllLikes: ({
         commit
-    }) => {
+    }, likes) => {
         return new Promise((resolve, reject) => {
-            instance.get('/post/likes')
+            instance.get('/post/likes', likes)
                 .then((response) => {
                     const likes = JSON.parse(response.data);
                     commit('setLikes', likes);
@@ -189,22 +195,24 @@ export default {
                 })
                 .catch((error) => {
                     reject(error);
+                    console.log(error);
                 })
         })
     },
     sendLikes: ({
         commit
-    }, likes) => {
+    }, post) => {
         return new Promise((resolve, reject) => {
-            instance.post('/post/' + likes.postId + '/like', likes.userData)
+            instance.post('/post/' + post.postId + '/like', post.userData)
                 .then((response) => {
+                    const like = JSON.parse(post.userData);
+                    console.log(like, response);
+                    commit('ADD_LIKE', like);
                     resolve(response);
-                    
                 })
                 .catch((error) => {
-                    commit('setLikes', null);
                     reject(error);
                 })
-        })
+        });
     }
 }

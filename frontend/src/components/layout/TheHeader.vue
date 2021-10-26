@@ -1,8 +1,8 @@
 <template>
-  <nav class="navbar is-dark " role="navigation" aria-label="main navigation">
+  <nav class="navbar groupomania-blue-back" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <h1>
-        <router-link to="/" class="navbar-item has-text-white"
+        <router-link to="/" class="navbar-item"
           >Groupomania</router-link
         >
       </h1>
@@ -13,6 +13,7 @@
         aria-label="menu"
         aria-expanded="false"
         @click="toogleBurger()"
+        v-if="isConnected == connected"
       >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -104,21 +105,28 @@ li {
   font-size: 1.5rem;
 }
 
-a {
+a, h1 {
   color: #fff;
 }
 
-a:focus, a:focus-within, a:hover, a:active {
+a:focus, a:focus-within, a:hover, a:active
+h1:focus, h1:focus-within, h1:hover, h1:active, a.navbar-item:hover
+{
     background-color: rgb(231, 229, 229)!important;
     color: #363636!important;
   }
 
 @media screen and (max-width: 1009px) {
-  a {
+  a, h1 {
     color: #fff; 
   }
+  
   .navbar-menu {
-    background-color: #363636 ;
+    background-color: #082043!important;
+  }
+ a.navbar-item:hover, a:focus, a:focus-within, a:hover, a:active {
+    background-color: rgb(231, 229, 229)!important;
+    color: #363636!important;
   }
  
 } 

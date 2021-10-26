@@ -16,7 +16,7 @@
               </p>
               <div class="field ">
                 <p class="control">
-                  <button class="button is-success is-outlined">Publier</button>
+                  <button class="button groupomania-red-back has-text-white">Publier</button>
                 </p>
               </div>
             </form>
@@ -71,7 +71,7 @@
 
 <script>
 export default {
-  props: ["postId", "comContent", "date", "comId"],
+  props: ["postId", "comContent", "date", "comId", "seeCom"],
   data() {
     return {
       modifyMyCom: null,
@@ -109,14 +109,18 @@ export default {
         this.$store.dispatch("forum/modifyCom", {
           id: comId,
           data: comData,
-        });
+        })
+        
       }
-      document.location.reload();
+      // if (this.seeCom === postId) {
+      //     return this.seeCom;
+      //   } else {
+      //     return this.seeCom === null;
+      //   }
     },
     deleteCom(comId) {
       try {
         this.$store.dispatch("forum/deleteCom", comId);
-        document.location.reload();
       } catch (error) {
         this.error =
           "You can't delete this com, try later or contact administrator.";

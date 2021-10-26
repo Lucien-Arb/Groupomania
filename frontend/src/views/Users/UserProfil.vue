@@ -59,17 +59,17 @@
                     />
                   </div>
                 </div>
-                <a
+                <button
                   :id="userId"
-                  class="button is-info mr-4 is-outlined"
+                  class="button mr-4 groupomania-red-back has-text-white"
                   @click="isClicked(userId)"
                 >
                   <span>Retour</span>
                   <span class="icon is-small">
                     <i class="fas fa-undo-alt"></i>
                   </span>
-                </a>
-                <button :id="userId" class="button is-success">
+                </button>
+                <button :id="userId" class="button groupomania-blue-back2 has-text-white">
                   <span>Valider</span>
                   <span class="icon is-small">
                     <i class="far fa-check-circle"></i>
@@ -78,7 +78,7 @@
               </form>
               <p class="buttons mt-4 mb-2">
                 <button
-                  class="button is-info mr-4"
+                  class="button  groupomania-blue-back2 has-text-white mr-4"
                   @click="isClicked(userId)"
                   v-show="toggleForm === null"
                 >
@@ -89,7 +89,7 @@
                 </button>
                 <button
                   :id="userId"
-                  class="button is-danger is-outlined"
+                  class="button groupomania-red-back has-text-white is-outlined"
                   @click="deleteUser(userId)"
                   v-show="toggleForm === null"
                 >
@@ -130,7 +130,6 @@ export default {
     userId() {
       let user = this.$store.getters["auth/userData"];
       return JSON.parse(user)['userId'];
-      //return 1;
     },
     users() {
       return this.$store.state.account.users;
@@ -160,7 +159,7 @@ export default {
       try {
         const user = this.$store.state.auth.user;
         userId = JSON.parse(user).userId;
-        console.log(userId);
+
         this.$store.dispatch("account/deleteUser", userId);
         this.$store.dispatch("auth/logout");
         this.$router.replace("/auth")
@@ -180,20 +179,12 @@ export default {
         return;
       } else {
         this.$store.dispatch("account/modifyInfos", userData);
+        this.isClicked();
       }
-      // document.location.reload();
     },
   },
   mounted() {
     this.loadUserInfos();
-
-    // let user = this.$store.getters["auth/userData"];
-    //   const userId = JSON.parse(user)['userId'];
-    //   console.log(userId);
-    //   return this.userId === userId;
   }
 };
 </script>
-
-<style>
-</style>
