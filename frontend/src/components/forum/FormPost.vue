@@ -81,6 +81,8 @@ export default {
         return;
       } else {
         this.$store.dispatch("forum/sendPost", postData);
+        this.title = "";
+        this.content = "";
       }
 
     }

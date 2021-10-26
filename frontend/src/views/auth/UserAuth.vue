@@ -137,14 +137,14 @@ export default {
         } else {
           await this.$store.dispatch("auth/signup", signup);
           this.enterYourInfo = true;
-          this.email = "";
-          this.password = "";
         }
     },
     switchAuthMode() {
       if (this.mode === "login") {
         this.mode = "signup";
         this.wantToConnect = false;
+        this.email = "";
+        this.password = "";
       } else {
         this.mode = "login";
         this.wantToConnect = true;
