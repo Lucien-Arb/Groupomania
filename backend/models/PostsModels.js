@@ -61,13 +61,11 @@ class PostsModels {
                         resolve({
                             message: 'Post supprimé !'
                         });
-                        console.warn(resolve)
                     })
                 } else {
                     reject({
                         error: 'fonction indisponible'
                     });
-                    console.warn(reject)
                 }
 
             });
