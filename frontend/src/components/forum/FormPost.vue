@@ -66,15 +66,30 @@ export default {
     }
   },
   methods: {
+    loadUserInfos() {
+      try {
+        this.$store.dispatch("account/getMyInfos");
+      } catch (error) {
+        this.error = error.message || "Something went wrong !";
+      }
+    },
     submitForm() {
-      const id = JSON.parse(localStorage.getItem('user'))['userId'];
+      let userId = this.$store.getters["auth/userData"];
+      const id = JSON.parse(userId)['userId'];
+
+      let user = this.$store.getters["account/userData"];
+      const firstName = (user)[0]['firstName'];
+      const lastName = (user)[0]['lastName'];
 
       const postData = JSON.stringify({
         userId: id,
         title: this.title,
         content: this.content,
+        firstName: firstName,
+        lastName: lastName,
+        // date: date,
+        likes: 0,
       })
-      console.log(postData)
 
       if (this.title === "" && this.content === "" && this.userId === null) {
         this.formIsValid = false;
@@ -86,6 +101,13 @@ export default {
       }
 
     }
+  },
+  mounted() {
+    this.loadUserInfos();
+    // let userId = this.$store.getters["auth/userData"];
+    // let user = this.$store.getters["account/userData"];
+    //  const firstName = (user)[0]['firstName']
+    // console.log(userId, user, firstName)
   }
 
 };

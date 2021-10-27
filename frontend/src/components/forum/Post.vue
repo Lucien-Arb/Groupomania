@@ -13,7 +13,7 @@
             <div class="column is-8 pb-0">
               <h3 class="title is-3" id="mobile-title">{{ post.title }}</h3>
             </div>
-            <div class="column is-2 is-offset-2" id="dropdown">
+            <div class="column is-2 is-offset-2" id="dropdown" v-if="post.userId === userId">
               <div
                 class="dropdown"
                 @click="activeIt(post.id)"
@@ -129,6 +129,7 @@
               :comContent="com.comContent"
               :date="com.date"
               :seeCom="post.id"
+              :comUserId="com.userId"
             ></comments>
           </ul>
           <form-comments
@@ -194,6 +195,10 @@ export default {
     getLikes() {
       return this.$store.state.forum.allLikes;
     },
+    userId() {
+      let user = this.$store.getters["auth/userData"];
+      return JSON.parse(user)['userId'];
+    },
   },
   methods: {
     loadPosts() {
@@ -204,8 +209,13 @@ export default {
       }
     },
     deletePost(postId) {
+      let user = this.$store.getters["auth/userData"];
+      user = JSON.parse(user)['userId'];
       try {
-        this.$store.dispatch("forum/deletePost", postId);
+        this.$store.dispatch("forum/deletePost", {
+          id: postId,
+          userId: user
+        });
       } catch (error) {
         this.error =
           "You can't delete this post, try later or contact administrator.";
@@ -235,7 +245,7 @@ export default {
       const postData = JSON.stringify({
         title: this.title,
         content: this.content,
-        postId: postId,
+        id: postId,
       });
 
       if (this.title === "" && this.content === "" && this.userId === null) {

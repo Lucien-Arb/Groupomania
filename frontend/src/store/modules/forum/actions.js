@@ -31,7 +31,7 @@ export default {
                     instance.get('/post')
                         .then(response => {
                             const posts = JSON.parse(response.data);
-                            commit('GET_POSTS', posts)
+                            commit('GET_POSTS', posts);
                         })
                 })
                 .catch((error) => {
@@ -47,14 +47,8 @@ export default {
             instance.put('/post/' + post.id, post.data)
                 .then(response => {
                     const postInfo = JSON.parse(post.data);
-                    console.log(postInfo);
                     commit('UPDATE_POST', postInfo);
                     resolve(response);
-                    instance.get('/post')
-                        .then(response => {
-                            const posts = JSON.parse(response.data);
-                            commit('GET_POSTS', posts);
-                        })
                 })
                 .catch((error) => {
                     reject(error);
@@ -80,10 +74,9 @@ export default {
         commit
     }, post) => {
         return new Promise((resolve, reject) => {
-            console.log(post);
-            instance.delete('/post/' + post)
+            instance.delete('/post/' + post.id, post)
                 .then((response) => {
-                    const postInfo = JSON.parse(post);
+                    const postInfo = JSON.parse(response.data);
                     commit('DELETE_POST', postInfo);
                     resolve(response);
                     instance.get('/post')
@@ -121,15 +114,9 @@ export default {
         return new Promise((resolve, reject) => {
             instance.post('/post/' + comInfos.id + '/comments', comInfos.data)
                 .then((response) => {
-                    const com = JSON.parse(comInfos.data);
-                    commit('ADD_COM', com);
+                    let new_comment = JSON.parse(response.data)
+                    commit('ADD_COM', new_comment);
                     resolve(response);
-                    instance.get('/post/' + comInfos.id + '/comments')
-                        .then((response) => {
-                            const com = JSON.parse(response.data);
-                            commit('GET_COMS', com);
-                            resolve(response);
-                        })
                 })
                 .catch((error) => {
                     reject(error);
@@ -195,7 +182,6 @@ export default {
                 })
                 .catch((error) => {
                     reject(error);
-                    console.log(error);
                 })
         })
     },
@@ -206,7 +192,6 @@ export default {
             instance.post('/post/' + post.postId + '/like', post.userData)
                 .then((response) => {
                     const like = JSON.parse(post.userData);
-                    console.log(like, response);
                     commit('ADD_LIKE', like);
                     resolve(response);
                 })

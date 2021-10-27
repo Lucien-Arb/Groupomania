@@ -31,6 +31,7 @@
               @click="activeIt(comId)"
               :id="comId"
               :ref="'element' + comId"
+              v-if="comUserId === userId"
             >
               <div class="dropdown-trigger has-text-info">
                 <button
@@ -71,12 +72,18 @@
 
 <script>
 export default {
-  props: ["postId", "comContent", "date", "comId", "seeCom"],
+  props: ["postId", "comContent", "date", "comId", "seeCom", "comUserId"],
   data() {
     return {
       modifyMyCom: null,
       content: ""
     }
+  },
+  computed: {
+    userId() {
+      let user = this.$store.getters["auth/userData"];
+      return JSON.parse(user)['userId'];
+    },
   },
   methods: {
     activeIt(comId) {
@@ -112,11 +119,6 @@ export default {
         })
         
       }
-      // if (this.seeCom === postId) {
-      //     return this.seeCom;
-      //   } else {
-      //     return this.seeCom === null;
-      //   }
     },
     deleteCom(comId) {
       try {

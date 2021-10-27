@@ -64,7 +64,6 @@ export default {
   },
   computed: {
     connected() {
-      console.log(this.$store.getters['auth/isAuthenticated'])
       if (this.$store.getters['auth/isAuthenticated'] == 1) {
         return this.isConnected == 1
       } else {
@@ -88,7 +87,6 @@ export default {
     let user = this.$store.getters["auth/userData"]
     if (user !== null) {
       this.admin = JSON.parse(user)['moderation'];
-      console.log(this.admin)
     }
   }
 };
