@@ -36,7 +36,7 @@ export default {
         content: this.content,
         comId: this.comId
       });
-
+        
       if (this.content === "" && this.userId === null) {
         this.formIsValid = false;
         return;

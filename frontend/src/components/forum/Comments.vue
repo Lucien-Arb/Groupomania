@@ -117,8 +117,8 @@ export default {
           id: comId,
           data: comData,
         })
-        
       }
+      this.isClicked();
     },
     deleteCom(comId) {
       try {

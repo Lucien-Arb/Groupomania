@@ -25,10 +25,13 @@ export default {
     },
     ADD_COM(state, newCom) {
         state.comments.push(newCom);
+        console.log(state, newCom);
     },
     UPDATE_COM(state, newCom) {
         const comIndex = state.comments.findIndex(c => c.id === newCom.id);
-        state.comments[comIndex] = newCom
+        state.comments[comIndex] = newCom;
+        state.comments = [...state.comments];
+        console.log(state, newCom);
     },
     DELETE_COM(state, com) {
         if (state.comments.id === com.comId) {

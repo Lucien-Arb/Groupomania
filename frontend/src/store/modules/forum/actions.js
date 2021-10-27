@@ -115,6 +115,7 @@ export default {
             instance.post('/post/' + comInfos.id + '/comments', comInfos.data)
                 .then((response) => {
                     let new_comment = JSON.parse(response.data)
+                    console.log(new_comment, comInfos.data)
                     commit('ADD_COM', new_comment);
                     resolve(response);
                 })
@@ -129,7 +130,8 @@ export default {
         return new Promise((resolve, reject) => {
             instance.put('/post/comments/' + comInfos.id, comInfos.data)
                 .then((response) => {
-                    const com = JSON.parse(comInfos.data);
+                    let com = JSON.parse(comInfos.data);
+                    console.log(response.data, com)
                     commit('UPDATE_COM', com);
                     resolve(response);
                     instance.get('/post/' + comInfos.id + '/comments')

@@ -1,6 +1,6 @@
 <template>
   <li >
-    <article class="media">
+    <article class="media column">
       <div class="media-content p-5 background">
         <div
           class="content columns is-mobile is-tablet is-desktop is-widescreen"
