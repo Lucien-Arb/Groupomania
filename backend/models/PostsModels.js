@@ -20,9 +20,13 @@ class PostsModels {
         return new Promise((resolve) => {
             connectdb.query(sql, function (err, result, fields) {
                 if (err) throw err;
-                resolve({
-                    message: 'Nouveau post !'
+                let post_id = result.insertId;
+                sql = "SELECT id, userId, DATE_FORMAT(date, '%d/%m/%Y') as date, title, content from posts where id = ?";
+                sql = mysql.format(sql, post_id);
+                connectdb.query(sql, function (err, results, fields) {
+                    return resolve(results[0]);
                 });
+                
             })
         })
     }
@@ -84,15 +88,19 @@ class PostsModels {
 
         })
     }
-    createComment(sqlInserts) {
+     createComment(sqlInserts) {
         let sql = 'INSERT INTO comments VALUES(NULL, ?, ?, NOW(), ?)';
         sql = mysql.format(sql, sqlInserts);
         return new Promise((resolve) => {
             connectdb.query(sql, function (err, result, fields) {
                 if (err) throw err;
-                resolve({
-                    message: 'Nouveau commentaire !'
-                })
+                let comment_id = result.insertId;
+                sql = "SELECT id, userId, postId, DATE_FORMAT(date, '%d/%m/%Y à %H:%i:%s') as date, comContent from comments where id = ?";
+                sql = mysql.format(sql, comment_id);
+                connectdb.query(sql, function (err, results, fields) {
+                    return resolve(results[0]);
+                });
+                
             })
         })
     }
@@ -168,6 +176,7 @@ class PostsModels {
             if (liked === false) {
                 connectdb.query(sql1, function (err, result, fields) {
                     if (err) throw err;
+                    console.log(result, fields)
                     resolve({
                         message: 'Like !'
                     })
@@ -176,6 +185,7 @@ class PostsModels {
             if (liked === true) {
                 connectdb.query(sql3, function (err, result, fields) {
                     if (err) throw err;
+                    console.log(result, fields)
                     resolve({
                         message: 'Like supprimé!'
                     })
