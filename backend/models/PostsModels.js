@@ -26,7 +26,7 @@ class PostsModels {
                 connectdb.query(sql, function (err, results, fields) {
                     return resolve(results[0]);
                 });
-                
+
             })
         })
     }
@@ -88,19 +88,21 @@ class PostsModels {
 
         })
     }
-     createComment(sqlInserts) {
+    createComment(sqlInserts) {
         let sql = 'INSERT INTO comments VALUES(NULL, ?, ?, NOW(), ?)';
         sql = mysql.format(sql, sqlInserts);
         return new Promise((resolve) => {
             connectdb.query(sql, function (err, result, fields) {
                 if (err) throw err;
                 let comment_id = result.insertId;
+                console.log(result, comment_id)
                 sql = "SELECT id, userId, postId, DATE_FORMAT(date, '%d/%m/%Y à %H:%i:%s') as date, comContent from comments where id = ?";
                 sql = mysql.format(sql, comment_id);
                 connectdb.query(sql, function (err, results, fields) {
+                    console.log(results[0], comment_id)
                     return resolve(results[0]);
                 });
-                
+
             })
         })
     }
@@ -115,9 +117,7 @@ class PostsModels {
                     sql2 = mysql.format(sql2, sqlInserts2);
                     connectdb.query(sql2, function (err, result, fields) {
                         if (err) throw err;
-                        resolve({
-                            message: 'Commentaire modifié !'
-                        });
+                        resolve(result);
                     })
                 } else {
                     reject({
@@ -129,7 +129,7 @@ class PostsModels {
     }
     deleteComment(sqlInserts1, sqlInserts2) {
         let sql1 = 'SELECT * FROM comments where id = ?';
-         sql1 = mysql.format(sql1, sqlInserts1);
+        sql1 = mysql.format(sql1, sqlInserts1);
         return new Promise((resolve, reject) => {
             connectdb.query(sql1, function (err, result, fields) {
                 if (err) throw err;
