@@ -13,7 +13,7 @@ export default {
         state.posts = [...state.posts];
     },
     DELETE_POST(state, post) {
-        if (state.posts.id === post) {
+        if (state.posts[0].id === post) {
             const postIndex = state.posts.findIndex( p => p.id === post);
             if (postIndex !== -1) {
                 state.posts.splice(postIndex, 1);
@@ -25,7 +25,6 @@ export default {
     },
     ADD_COM(state, newCom) {
         state.comments.push(newCom);
-        console.log(state, newCom);
     },
     UPDATE_COM(state, newCom) {
         const comIndex = state.comments.findIndex(c => c.id === newCom.id);
@@ -34,12 +33,10 @@ export default {
         console.log(state, newCom);
     },
     DELETE_COM(state, com) {
-        if (state.comments.id === com.comId) {
-            const comIndex = state.comments.findIndex(c => c.id === com.id);
+            const comIndex = state.comments.findIndex(c => c.id === com);
             if (comIndex !== -1) {
                 state.comments.splice(comIndex, 1);
             }
-        }
     },
     GET_LIKES(state, like) {
         state.allLikes = like;

@@ -83,7 +83,6 @@
               <button class="button is-normal px-6 groupomania-red-back has-text-white is-centered">
                 <span class="content-heading-weight">Publier</span>
               </button>
-              <!-- <p > Erreur !</p> -->
             </form>
           </div>
           <div v-else>
@@ -209,7 +208,7 @@ export default {
       }
     },
     deletePost(postId) {
-      let user = this.$store.getters["auth/userData"];
+      var user = this.$store.getters["auth/userData"];
       user = JSON.parse(user)['userId'];
       try {
         this.$store.dispatch("forum/deletePost", {

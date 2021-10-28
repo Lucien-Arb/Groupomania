@@ -87,9 +87,9 @@ export default {
         content: this.content,
         firstName: firstName,
         lastName: lastName,
-        // date: date,
         likes: 0,
       })
+      console.log(postData);
 
       if (this.title === "" && this.content === "" && this.userId === null) {
         this.formIsValid = false;

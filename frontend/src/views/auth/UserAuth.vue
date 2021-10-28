@@ -13,8 +13,8 @@
           <p v-if="mode == 'login'" class="column">Vous n'avez pas de compte ?<br> <a @click="switchAuthMode()" class="groupomania-red">Créer un compte</a></p>
           <p v-else class="column">Vous avez déjà un compte ?<br> <a @click="switchAuthMode()" class="groupomania-red">Se connecter</a></p>
         </div>
-         <h4 v-if="enterYourInfo == true" class="m-4 columns has-text-centered">
-           <span class="has-text-info title is-5"> Entrez votre email et votre mot de passe.</span>
+        <h4 v-if="enterYourInfo == true" class="m-4 columns is-centered">
+             <span class="has-text-info title is-5"> Entrez votre email et votre mot de passe.</span>
         </h4>
         <form action="" @submit.prevent="submitForm" class="pt-0">
           <div class="field" v-if="!wantToConnect">
@@ -137,6 +137,9 @@ export default {
         } else {
           await this.$store.dispatch("auth/signup", signup);
           this.enterYourInfo = true;
+          this.email = "";
+          this.password = "";
+          this.switchAuthMode();
         }
     },
     switchAuthMode() {

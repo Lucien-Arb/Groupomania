@@ -25,7 +25,8 @@ export default {
         return new Promise((resolve, reject) => {
             instance.post('/post', newPost)
                 .then(response => {
-                    const post = JSON.parse(newPost);
+                    const post = JSON.parse(response.data);
+                    console.log(post);
                     commit('ADD_POST', post);
                     resolve(response)
                     instance.get('/post')
@@ -76,14 +77,9 @@ export default {
         return new Promise((resolve, reject) => {
             instance.delete('/post/' + post.id, post)
                 .then((response) => {
-                    const postInfo = JSON.parse(response.data);
+                    const postInfo = JSON.parse(post.id);
                     commit('DELETE_POST', postInfo);
                     resolve(response);
-                    instance.get('/post')
-                        .then(response => {
-                            const posts = JSON.parse(response.data);
-                            commit('GET_POSTS', posts);
-                        })
                 })
                 .catch((error) => {
                     reject(error);
@@ -114,8 +110,7 @@ export default {
         return new Promise((resolve, reject) => {
             instance.post('/post/' + comInfos.id + '/comments', comInfos.data)
                 .then((response) => {
-                    let new_comment = JSON.parse(response.data)
-                    console.log(new_comment, comInfos.data)
+                    let new_comment = JSON.parse(response.data);
                     commit('ADD_COM', new_comment);
                     resolve(response);
                 })
@@ -155,12 +150,6 @@ export default {
                     const com = JSON.parse(comId);
                     commit('DELETE_COM', com);
                     resolve(response);
-                    instance.get('/post/' + comId + '/comments')
-                        .then((response) => {
-                            const com = JSON.parse(response.data);
-                            commit('GET_COMS', com);
-                            resolve(response);
-                        })
                 })
                 .catch((error) => {
                     reject(error);

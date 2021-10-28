@@ -15,6 +15,7 @@ export default {
                     sapiente fugiat minus deleniti dicta perferendis molestias a autem
                     totam quidem exercitationem`,
                     userId: "",
+                    date: "01/01/2022",
                     likes: 0
                 }
             ],
