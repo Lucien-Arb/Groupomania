@@ -21,12 +21,11 @@ class PostsModels {
             connectdb.query(sql, function (err, result, fields) {
                 if (err) throw err;
                 let post_id = result.insertId;
-                sql = "SELECT id, userId, DATE_FORMAT(date, '%d/%m/%Y') as date, title, content from posts where id = ?";
+                sql = "SELECT id, userId, DATE_FORMAT(date, '%d/%m/%Y') as date, title, content, likes FROM posts WHERE id = ?";
                 sql = mysql.format(sql, post_id);
                 connectdb.query(sql, function (err, results, fields) {
                     return resolve(results[0]);
                 });
-
             })
         })
     }
@@ -62,9 +61,7 @@ class PostsModels {
                     sql2 = mysql.format(sql2, sqlInserts2);
                     connectdb.query(sql2, function (err, result, fields) {
                         if (err) throw err;
-                        resolve({
-                            message: 'Post supprimé !'
-                        });
+                        resolve(result);
                     })
                 } else {
                     reject({
@@ -95,11 +92,9 @@ class PostsModels {
             connectdb.query(sql, function (err, result, fields) {
                 if (err) throw err;
                 let comment_id = result.insertId;
-                console.log(result, comment_id)
                 sql = "SELECT id, userId, postId, DATE_FORMAT(date, '%d/%m/%Y à %H:%i:%s') as date, comContent from comments where id = ?";
                 sql = mysql.format(sql, comment_id);
                 connectdb.query(sql, function (err, results, fields) {
-                    console.log(results[0], comment_id)
                     return resolve(results[0]);
                 });
 
@@ -176,7 +171,6 @@ class PostsModels {
             if (liked === false) {
                 connectdb.query(sql1, function (err, result, fields) {
                     if (err) throw err;
-                    console.log(result, fields)
                     resolve({
                         message: 'Like !'
                     })
@@ -185,7 +179,6 @@ class PostsModels {
             if (liked === true) {
                 connectdb.query(sql3, function (err, result, fields) {
                     if (err) throw err;
-                    console.log(result, fields)
                     resolve({
                         message: 'Like supprimé!'
                     })
